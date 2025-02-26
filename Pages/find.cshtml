@@ -1,0 +1,120 @@
+@page
+@model FindModel
+@{
+    ViewData["Title"] = "Find";
+}
+
+<h2 class="search-results-heading">Search Results for "<span class="user-input">@Model.Query</span>"</h2>
+
+<h3 class="section-heading">Movies</h3>
+<div class="search-results-container">
+    @if (Model.Movies != null && Model.Movies.Any())
+    {
+        <ul class="find-movie-list">
+            @foreach (var movie in Model.Movies)
+            {
+                <li class="find-movie-item">
+                    <img src="@movie.Poster" alt="Movie Poster" class="find-movie-poster"/>
+                    <div class="find-movie-details">
+                        <a asp-page="/movie" asp-route-id="@movie.MovieID" class="find-movie-title">@movie.MovieTitle</a>
+                        <p class="find-movie-year">@movie.Year</p>
+                        <p class="find-movie-genres">
+                            @string.Join(" • ", movie.MovieGenres.Select(mg => mg.Genre.GenreName))
+                        </p>
+                        <p class="find-movie-director">
+                            @movie.CelebritiesInMovies.FirstOrDefault(cim => cim.Credit.Role == "Director")?.Celebrity.Forename @movie.CelebritiesInMovies.FirstOrDefault(cim => cim.Credit.Role == "Director")?.Celebrity.Surname
+                        </p>
+                    </div>
+                </li>
+                @if (Model.Movies.Count > 1)
+                {
+                    <hr class="section-divider">
+                }
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No results found for "@Model.Query"</p>
+    }
+</div>
+
+<h3 class="section-heading">People</h3>
+<div class="search-results-container">
+    @if (Model.Celebrities != null && Model.Celebrities.Any())
+    {
+        <ul class="find-actor-list">
+            @foreach (var celebrity in Model.Celebrities)
+            {
+                var latestMovie = celebrity.CelebritiesInMovies.OrderByDescending(cim => cim.Movie.ReleaseDate).FirstOrDefault();
+                <li class="find-actor-item">
+                    <img src="@celebrity.Picture" alt="Actor Picture" class="find-actor-picture"/>
+                    <div class="find-actor-details">
+                        <a asp-page="/name" asp-route-id="@celebrity.CelebrityID" class="find-actor-name">@celebrity.Forename @celebrity.Surname</a>
+                        <p class="find-actor-role"> Latest Role:
+                            @if (latestMovie?.Credit?.Role != null)
+                            {
+                                @if (latestMovie.Credit.Role == "Voice")
+                                {
+                                    @("Voiced")
+                                }
+                                else
+                                {
+                                    @latestMovie.Credit.Role
+                                }
+                                @if (!string.IsNullOrEmpty(latestMovie.Character))
+                                {
+                                    @(" as " + latestMovie.Character)
+                                }
+                                @(" in " + latestMovie.Movie.MovieTitle)
+                            }
+                        </p>
+                    </div>
+                </li>
+                @if (Model.Celebrities.Count > 1)
+                {
+                    <hr class="section-divider">
+                }
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No results found for "@Model.Query"</p>
+    }
+</div>
+
+<h3 class="section-heading">Users</h3>
+<div class="search-results-container">
+    @if (Model.Users != null && Model.Users.Any())
+    {
+        <ul class="find-user-list">
+            @foreach (var user in Model.Users)
+            {
+                <li class="find-user-item">
+                    <img src="@user.Picture" alt="User Picture" class="find-user-picture"/>
+                    <div class="find-user-details">
+                        <a asp-page="/user" asp-route-id="@user.UserID" class="find-user-name">@user.Username</a>
+                        <p class="find-user-bio">@user.Bio</p>
+                        @if (Model.LatestReviewedMovies.ContainsKey(user.UserID))
+                        {
+                            <p class="find-user-latest-review">Latest Reviewed Movie: 
+                                <a asp-page="/movie" asp-route-id="@Model.LatestReviewedMovies[user.UserID].MovieID">
+                                    @Model.LatestReviewedMovies[user.UserID].MovieTitle
+                                </a>
+                            </p>
+                        }
+                    </div>
+                </li>
+                @if (Model.Users.Count > 1)
+                {
+                    <hr class="section-divider">
+                }
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No results found for "@Model.Query"</p>
+    }
+</div>

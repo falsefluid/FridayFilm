@@ -1,0 +1,122 @@
+﻿@page
+@model IndexModel
+@{
+}
+
+<h2 class="text-center mt-4">Recently Added</h2>
+<p class="text-center">Keep up to date with the latest movies here</p>
+<div class="movie-carousel-container">
+    <button id="left-arrow" class="carousel-btn left" onclick="moveCarousel(-1, 'recently-added')">&#10094;</button>
+    <div class="movie-carousel recently-added">
+        @foreach (var movie in Model.Movie)
+        {
+            <div class="movie-card">
+                <div class="movie-image-container">
+                    <img src="@movie.Poster" alt="Movie Poster" class="movie-image"/>
+                </div>
+                <div class="movie-info">
+                    <div class="average-rating" style="color:white;">
+                        <img src="/images/star-full.png" alt="Star" class="star-icon" />
+                        @(movie.AverageRating != null ? movie.AverageRating.ToString("0.#") : "N/A")/10 <!-- Rating number -->
+                    </div>
+                    <h2 class="movie-title">@Html.DisplayFor(modelItem => movie.MovieTitle)</h2>
+                    <div class="view-button-container"> 
+                        <a asp-page="/Movie" asp-route-id="@movie.MovieID" class="view-btn">View Now</a>
+                    </div>
+                </div>
+            </div>   
+        }
+    </div>
+    <button id="right-arrow" class="carousel-btn right" onclick="moveCarousel(1, 'recently-added')">&#10095;</button>
+</div>
+
+<h2 class="text-center mt-5">Top Rated Movies</h2>
+<p class="text-center">Check out the highest rated movies here</p>
+<div class="movie-carousel-container">
+    <button id="left-arrow-top-rated" class="carousel-btn left" onclick="moveCarousel(-1, 'top-rated')">&#10094;</button>
+    <div class="movie-carousel top-rated">
+        @foreach (var movie in Model.TopRatedMovies)
+        {
+            <div class="movie-card">
+                <div class="movie-image-container">
+                    <img src="@movie.Poster" alt="Movie Poster" class="movie-image"/>
+                </div>
+                <div class="movie-info">
+                    <div class="average-rating" style="color:white;">
+                        <img src="/images/star-full.png" alt="Star" class="star-icon" />
+                        @(movie.AverageRating != null ? movie.AverageRating.ToString("0.#"): "N/A")/10 <!-- Rating number -->
+                    </div>
+                    <h2 class="movie-title">@Html.DisplayFor(modelItem => movie.MovieTitle)</h2>
+                    <div class="view-button-container"> 
+                        <a asp-page="/Movie" asp-route-id="@movie.MovieID" class="view-btn">View Now</a>
+                    </div>
+                </div>
+            </div>   
+        }
+    </div>
+    <button id="right-arrow-top-rated" class="carousel-btn right" onclick="moveCarousel(1, 'top-rated')">&#10095;</button>
+</div>
+
+@section Scripts {
+    <script>
+        const moviesToShow = 3;
+        let currentIndexRecentlyAdded = 0;
+        let currentIndexTopRated = 0;
+
+        function updateCarousel(carouselClass, currentIndex) {
+            const movieCards = document.querySelectorAll(`.${carouselClass} .movie-card`);
+            const totalMovies = movieCards.length;
+
+            movieCards.forEach((card, index) => {
+                card.style.display = 'none';
+            });
+
+            for (let i = 0; i < moviesToShow; i++) {
+                let displayIndex = (currentIndex + i) % totalMovies;
+                if (displayIndex < 0) {
+                    displayIndex += totalMovies;
+                }
+                movieCards[displayIndex].style.display = 'block';
+            }
+
+            // Update arrow button states for recently-added
+            if (carouselClass === 'recently-added') {
+                document.getElementById('left-arrow').classList.toggle('disabled', currentIndex === 0);
+                document.getElementById('right-arrow').classList.toggle('disabled', currentIndex + moviesToShow >= totalMovies);
+            }
+            
+            // Update arrow button states for top-rated
+            if (carouselClass === 'top-rated') {
+                document.getElementById('left-arrow-top-rated').classList.toggle('disabled', currentIndex === 0);
+                document.getElementById('right-arrow-top-rated').classList.toggle('disabled', currentIndex + moviesToShow >= totalMovies);
+            }
+        }
+
+        function moveCarousel(direction, carouselClass) {
+            let currentIndex = carouselClass === 'recently-added' ? currentIndexRecentlyAdded : currentIndexTopRated;
+            
+            currentIndex += direction;
+            const movieCards = document.querySelectorAll(`.${carouselClass} .movie-card`);
+            const totalMovies = movieCards.length;
+
+            if (currentIndex < 0) {
+                currentIndex = 0;
+            } else if (currentIndex + moviesToShow > totalMovies) {
+                currentIndex = totalMovies - moviesToShow;
+            }
+
+            if (carouselClass === 'recently-added') {
+                currentIndexRecentlyAdded = currentIndex;
+            } else {
+                currentIndexTopRated = currentIndex;
+            }
+
+            updateCarousel(carouselClass, currentIndex);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCarousel('recently-added', currentIndexRecentlyAdded);
+            updateCarousel('top-rated', currentIndexTopRated);
+        });
+    </script>
+}

@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FridayFilmClub</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/FridayFilmClub.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light" style="background-color:#231f20; height:75px; border:0px solid black; border-radius:0 0 10px 10px; box-shadow: 0 0 25px black;">
+            <div class="navbar-brand-container">
+                <a href="/">
+                    <img src="~/images/logo.png" alt="The logo of Friday Film Club" style="width: 68px; height: 68px;"/>
+                </a>
+                <!-- Speech bubble Title -->
+                <div class="bubble">Friday Film Club</div>
+            </div>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <form class="d-flex mx-auto position-relative navbar-center w-50" method="get" action="/find">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchInput" name="query" required>
+                    </form>
+                </ul>
+            </div>
+            <div class="navbar-end">
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <span style="color:white; margin-right:10px;">@User.Identity.Name</span>
+                    <a href="/registration/logout" class="all-btn" style="color:white;">Logout</a>
+                }
+                else
+                {
+                    <a href="/registration/signin" class="all-btn" style="color:white;">Sign Up</a>
+                    <a href="/registration/login" class="all-btn" style="color:white;">Login</a>
+                }
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer" style="background-color:#231f20; width:100%; position:absolute; bottom:0px; box-shadow: 0 0 25px black;">
+        <div class="footer_text" style="color:white; margin-left: 25px;">
+            &copy; 2025 - FridayFilmClub
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

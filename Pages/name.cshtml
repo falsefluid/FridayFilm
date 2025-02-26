@@ -1,0 +1,49 @@
+@page "{id:int}"
+@model NameModel
+@using System.Web
+@{
+    ViewData["Title"] = Model.Celebrity.Forename + " " + Model.Celebrity.Surname;
+}
+
+<div class="celebrity-header" style="margin-top: 20px;"></div>
+
+<div class="celebrity-details-container">
+    <div class="celebrity-details-poster">
+        <img src="@Model.Celebrity.Picture" alt="Celebrity Picture" />
+    </div>
+    <div class="celebrity-details-info" style="margin-left: 20px;">
+        <h2>@Model.Celebrity.Forename @Model.Celebrity.Surname</h2>
+        <p class="celebrity-detail-item"><strong>Highest Rated:</strong> @(Model.HighestRated?.Movie.AverageRating > 0 ? Model.HighestRated.Movie.AverageRating.ToString("0.#") : "N/A")/10 <img src="/images/star-full.png" alt="Star" style="width: 15px; height: 15px;" /> <a href="/movie/@Model.HighestRated?.Movie.MovieID">@Model.HighestRated?.Movie.MovieTitle (@Model.HighestRated?.Movie.Year)</a></p>
+        <p class="celebrity-detail-item"><strong>Lowest Rated:</strong> @(Model.LowestRated?.Movie.AverageRating > 0 ? Model.LowestRated.Movie.AverageRating.ToString("0.#") : "N/A")/10 <img src="/images/star-full.png" alt="Star" style="width: 15px; height: 15px;" /> <a href="/movie/@Model.LowestRated?.Movie.MovieID">@Model.LowestRated?.Movie.MovieTitle (@Model.LowestRated?.Movie.Year)</a></p>
+        <p class="celebrity-detail-item"><strong>Birthday:</strong> @Model.Celebrity.Birthday</p>
+        <p class="celebrity-detail-item"><strong>Birthplace:</strong> @Model.Celebrity.Birthplace</p>
+        <p>@Model.Celebrity.Bio</p>
+    </div>
+</div>
+
+<div class="filmography-container">
+    <h3>Filmography</h3>
+    <div class="filmography-wrapper">
+        <ul id="filmography-list" class="filmography-list">
+            @foreach (var cim in Model.Filmography)
+            {
+                <li class="filmography-item">
+                    <a href="/movie/@cim.Movie.MovieID">
+                        <img src="@cim.Movie.Poster" alt="@cim.Movie.MovieTitle" class="filmography-picture" />
+                        <div class="filmography-details">
+                            <p class="filmography-title">@cim.Movie.MovieTitle</p>
+                            @if (!string.IsNullOrEmpty(cim.Character))
+                            {
+                                <p class="filmography-role">@cim.Credit.Role as @cim.Character</p>
+                            }
+                            else
+                            {
+                                <p class="filmography-role">@cim.Credit.Role</p>
+                            }
+                        </div>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

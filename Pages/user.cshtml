@@ -1,0 +1,106 @@
+@page "{id:int}"
+@model UserModel
+@using System.Web
+@{
+    ViewData["Title"] = Model.user.Username;
+    var isLoggedIn = User.Identity.IsAuthenticated;
+}
+
+<div class="celebrity-header" style="margin-top: 20px;"></div>
+
+<div class="user-details-container">
+    <div class="user-details-image">
+        <img src="@Model.user.Picture" alt="User Picture" />
+    </div>
+    <div class="user-details-info" style="margin-left: 20px;">
+        <h2>@Model.user.Username</h2>
+        @if (Model.HighestRatedReview != null)
+        {
+            <p class="user-detail-item"><strong>Highest Rated Review:</strong> <a href="/movie/@Model.HighestRatedReview.Movie.MovieID">@Model.HighestRatedReview.Movie.MovieTitle</a> (@Model.HighestRatedReview.Rating/10)<img src="/images/star-full.png" alt="Star" style="width: 15px; height: 15px;" /></p>
+        }
+        @if (Model.LatestRatedReview != null)
+        {
+            <p class="user-detail-item"><strong>Latest Rated Review:</strong> <a href="/movie/@Model.LatestRatedReview.Movie.MovieID">@Model.LatestRatedReview.Movie.MovieTitle</a> (@Model.LatestRatedReview.Rating/10)<img src="/images/star-full.png" alt="Star" style="width: 15px; height: 15px;" /></p>
+        }
+    </div>
+</div>
+
+<div class="user-details-reviews-container">
+    <h3>User Reviews</h3>
+    <div class="user-details-reviews-wrapper">
+        <ul id="user-details-reviews-list" class="user-details-reviews-list">
+            @foreach (var review in Model.UserReviews)
+            {
+                <li class="user-details-review" ondblclick="openReviewModal('@review.Movie.MovieTitle', '@(HttpUtility.JavaScriptStringEncode(Uri.EscapeDataString(review.ReviewText)))', '@review.Rating', '@review.Date.ToString("dd/MM/yyyy")')">
+                    <div class="user-review-header">
+                        <img src="@review.Movie.Poster" alt="Movie Poster" class="movie-review-picture" />
+                        <span class="movie-review-title">@review.Movie.MovieTitle</span>
+                        @if (review.isSpoiler)
+                        {
+                            <span class="spoiler-warning">(Spoiler Warning)</span>
+                        }
+                    </div>
+                    <hr />
+                    <div class="user-review-body">
+                        <p class="@(review.isSpoiler ? "spoiler" : "")">@review.ReviewText</p>
+                    </div>
+                    <div class="user-review-footer">
+                        <span class="user-rating">Rating: @review.Rating/10</span>
+                        <span class="review-date">@review.Date.ToString("dd/MM/yyyy")</span>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<!-- Review Modal -->
+<div id="reviewModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeReviewModal()">&times;</span>
+        <div class="modal-content-details">
+            <h2 id="modalMovieTitle"></h2>
+            <hr />
+            <p id="modalReviewText"></p>
+        </div>
+        <div class="user-review-footer">
+            <p><strong>Rating: <span id="modalRating"></span>/10</strong></p>
+            <p><strong>Date:</strong> <span id="modalDate"></span></p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function openReviewModal(movieTitle, reviewText, rating, date) {
+            document.getElementById('modalMovieTitle').innerText = movieTitle;
+            document.getElementById('modalReviewText').innerText = decodeURIComponent(reviewText);
+            document.getElementById('modalRating').innerText = rating;
+            document.getElementById('modalDate').innerText = date;
+            document.getElementById('reviewModal').style.display = 'block';
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('reviewModal')) {
+                closeReviewModal();
+            }
+        }
+
+        document.querySelectorAll('.user-review-body p.spoiler').forEach(reviewText => {
+            let hoverTimeout;
+            reviewText.addEventListener('mouseover', function() {
+                hoverTimeout = setTimeout(() => {
+                    this.classList.add('unblur');
+                }, 1000);
+            });
+            reviewText.addEventListener('mouseout', function() {
+                clearTimeout(hoverTimeout);
+                this.classList.remove('unblur');
+            });
+        });
+    </script>
+}

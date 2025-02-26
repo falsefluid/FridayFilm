@@ -1,0 +1,261 @@
+@page "{id:int}"
+@model MovieModel
+@using System.Web
+@{
+    ViewData["Title"] = Model.Movie.MovieTitle;
+    var isLoggedIn = User.Identity.IsAuthenticated;
+
+    // Convert YouTube URL to embed format
+    string trailerUrl = Model.Movie.Trailer;
+    if (trailerUrl.Contains("watch?v="))
+    {
+        int startIndex = trailerUrl.IndexOf("watch?v=") + 8;
+        int endIndex = trailerUrl.IndexOf("&", startIndex);
+        if (endIndex == -1)
+        {
+            endIndex = trailerUrl.Length;
+        }
+        string videoId = trailerUrl.Substring(startIndex, endIndex - startIndex);
+        trailerUrl = "https://www.youtube.com/embed/" + videoId;
+    }
+}
+
+<div class="movie-header" style="margin-top: 20px;">
+    <div class="movie-header-left">
+        <h2>@Model.Movie.MovieTitle</h2>
+        <div class="movie-header-left-info">
+            <p>@Model.Movie.Year | @Model.Movie.Rated | @{ var hours = Model.Movie.RunTime / 60; var minutes = Model.Movie.RunTime % 60; } @($"{hours}h {minutes}min")</p>
+            <p>@Model.Genres</p> <!-- Display genres here -->
+        </div>
+    </div>
+    <div class="movie-header-right">
+        <div class="average-rating-container">
+            <div>Average Rating</div>
+            <div class="average-rating">
+                <img src="/images/star-full.png" alt="Star" class="star-icon" />
+                <span style="font-size:20px;"><strong>@(Model.Movie.AverageRating > 0 ? Model.Movie.AverageRating.ToString("0.#") : "N/A")</strong>/10</span>
+            </div>
+            <p style="color:gray;">(@Model.NumberOfReviews reviews)</p>
+        </div>
+    </div>
+</div>
+
+<div class="movie-details-container">
+    <div class="movie-details-poster">
+        <img src="@Model.Movie.Poster" alt="Movie Poster" />
+    </div>
+    <div class="movie-details-trailer" style="margin-left: 20px;">
+        <iframe width="560" height="315" src="@trailerUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+</div>
+
+<div class="movie-synopsis-container">
+    <p>@Model.Movie.Plot</p>
+</div>
+
+<div class="cast-crew-container">
+    <h2>Cast & Crew</h2>
+    <div class="cast-crew-wrapper">
+        <ul id="cast-crew-list" class="cast-crew-list">
+            @foreach (var cim in Model.Movie.CelebritiesInMovies)
+            {
+                <li class="cast-crew-item">
+                    <a href="/name/@cim.Celebrity.CelebrityID">
+                    <img src="@cim.Celebrity.Picture" alt="@cim.Celebrity.Forename @cim.Celebrity.Surname" class="cast-crew-picture" />
+                        <div class="cast-crew-details">
+                            <strong>@cim.Celebrity.Forename @cim.Celebrity.Surname</strong>
+                            <span>
+                                @if (!string.IsNullOrEmpty(cim.Character))
+                                {
+                                    <span>as @cim.Character</span>
+                                }
+                                else
+                                {
+                                    <span>@cim.Credit.Role</span>
+                                }
+                            </span>
+                        </div>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+@if (!Model.HasSubmittedReview)
+{
+    <div class="review-container">
+        <h3 class="text-center">What did you think of it?</h3>
+        <div class="rating-container">
+            <fieldset class="rating">
+                <input type="radio" id="star5" name="rating" value="5" /><label class="full" for="star5" title="Masterpiece!"></label>
+                <input type="radio" id="star4half" name="rating" value="4.5" /><label class="half" for="star4half" title="Definitely Recommend It"></label>
+                <input type="radio" id="star4" name="rating" value="4" /><label class="full" for="star4" title="Worth a Watch"></label>
+                <input type="radio" id="star3half" name="rating" value="3.5" /><label class="half" for="star3half" title="Well done"></label>
+                <input type="radio" id="star3" name="rating" value="3" /><label class="full" for="star3" title="Solid"></label>
+                <input type="radio" id="star2half" name="rating" value="2.5" /><label class="half" for="star2half" title="Not Bad, but Not My Favorite"></label>
+                <input type="radio" id="star2" name="rating" value="2" /><label class="full" for="star2" title="Meh"></label>
+                <input type="radio" id="star1half" name="rating" value="1.5" /><label class="half" for="star1half" title="Disappointing"></label>
+                <input type="radio" id="star1" name="rating" value="1" /><label class="full" for="star1" title="Just Terrible"></label>
+                <input type="radio" id="starhalf" name="rating" value="0.5" /><label class="half" for="starhalf" title="Unwatchable Mess!"></label>
+            </fieldset>
+        </div>
+        <div id="rating-title" class="rating-title"></div>
+        <div id="review-form" style="display: none;">
+            @if (isLoggedIn)
+            {
+                <form method="post">
+                    <input type="hidden" id="hiddenRating" name="NewReview.Rating" />
+                    <div class="form-group" style="margin-top:30px">
+                        <textarea id="reviewText" class="form-control" name="NewReview.ReviewText" rows="5" placeholder="Write your review here..." maxlength="750"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="isSpoiler" name="NewReview.isSpoiler" value="true" />
+                        <label for="isSpoiler">Contains Spoilers</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </form>
+            }
+            else
+            {
+                <p>Please <a href="/registration/login?ReturnUrl=@Url.Page("/movie", new { id = Model.Movie.MovieID })">log in</a> to write a review.</p>
+            }
+        </div>
+    </div>
+}
+
+<div class="user-reviews-container">
+    <h3>User Reviews</h3>
+    <div class="user-reviews-wrapper">
+        <ul id="user-reviews-list" class="user-reviews-list">
+            @foreach (var review in Model.UserReviews)
+            {
+                <li class="user-review" ondblclick="openReviewModal('@review.User.Username', '@(HttpUtility.JavaScriptStringEncode(Uri.EscapeDataString(review.ReviewText)))', '@review.Rating', '@review.Date.ToString("dd/MM/yyyy")')">
+                    <div class="user-review-header">
+                        <img src="@review.User.Picture" alt="User Profile Picture" class="user-profile-pic" />
+                        <span class="user-username">@review.User.Username</span>
+                        @if (review.isSpoiler)
+                        {
+                            <span class="spoiler-warning">(Spoiler Warning)</span>
+                        }
+                    </div>
+                    <hr />
+                    <div class="user-review-body">
+                        <p class="@(review.isSpoiler ? "spoiler" : "")">@review.ReviewText</p>
+                    </div>
+                    <div class="user-review-footer">
+                        <span class="user-rating">Rating: @review.Rating/10</span>
+                        <span class="review-date">@review.Date.ToString("dd/MM/yyyy")</span>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<!-- Review Modal -->
+<div id="reviewModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeReviewModal()">&times;</span>
+        <div class="modal-content-details">
+            <h2 id="modalUsername"></h2>
+            <hr />
+            <p id="modalReviewText"></p>
+        </div>
+        <div class="user-review-footer">
+            <p><strong>Rating: <span id="modalRating"></span>/10</strong></p>
+            <p><strong>Date:</strong> <span id="modalDate"></span></p>
+        </div>
+        @if (User.IsInRole("Admin"))
+        {
+            <button class="btn btn-danger" onclick="deleteReview()">Delete Review</button>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.user-review').forEach(reviewBox => {
+                let hoverTimeout;
+                reviewBox.addEventListener('mouseover', function() {
+                    const spoilerText = reviewBox.querySelector('.spoiler');
+                    if (spoilerText) {
+                        hoverTimeout = setTimeout(() => {
+                            spoilerText.classList.add('unblur');
+                        }, 500);
+                    }
+                });
+                reviewBox.addEventListener('mouseout', function() {
+                    const spoilerText = reviewBox.querySelector('.spoiler');
+                    if (spoilerText) {
+                        clearTimeout(hoverTimeout);
+                        spoilerText.classList.remove('unblur');
+                    }
+                });
+            });
+        });
+
+        document.querySelectorAll('.star-rating input').forEach(input => {
+            input.addEventListener('click', function() {
+                if (!@isLoggedIn.ToString().ToLower()) {
+                    alert('Please log in to rate this movie.');
+                    input.checked = false;
+                }
+            });
+        });
+
+        document.querySelectorAll('.rating input').forEach(input => {
+            input.addEventListener('change', function() {
+                const title = this.nextElementSibling.getAttribute('title');
+                document.getElementById('rating-title').innerText = title;
+                document.getElementById('review-form').style.display = 'block';
+
+                document.getElementById('hiddenRating').value = this.value;
+            });
+        });
+
+        document.getElementById('reviewText').addEventListener('input', function () {
+            const maxLines = 15; // Set the maximum number of lines allowed
+            const lines = this.value.split('\n');
+            if (lines.length > maxLines) {
+                this.value = lines.slice(0, maxLines).join('\n');
+            }
+        });
+
+        async function deleteReview() {
+            if (confirm("Are you sure you want to delete this review?")) {
+                const response = await fetch(`/movie?handler=DeleteReview&reviewId=${reviewIdToDelete}&movieId=${movieId}`, {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    }
+                });
+
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert("Failed to delete the review.");
+                }
+            }
+        }
+
+        function openReviewModal(username, reviewText, rating, date) {
+            document.getElementById('modalUsername').innerText = username;
+            document.getElementById('modalReviewText').innerText = decodeURIComponent(reviewText);
+            document.getElementById('modalRating').innerText = rating;
+            document.getElementById('modalDate').innerText = date;
+            document.getElementById('reviewModal').style.display = 'block';
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('reviewModal')) {
+                closeReviewModal();
+            }
+        }
+    </script>
+}
