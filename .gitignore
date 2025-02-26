@@ -1,0 +1,10 @@
+# Ignore build artifacts
+bin/
+obj/
+*.pdb
+*.exe
+*.dll
+*.cache
+*.json
+*.GeneratedMSBuildEditorConfig
+*.csproj.FileListAbsolute.txt
