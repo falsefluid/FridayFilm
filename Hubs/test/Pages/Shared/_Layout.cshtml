@@ -36,7 +36,15 @@
                 </div>
                 
                 <!-- Sign Up Button on the Right -->
-                <a href="/signup" class="btn btn-primary">Sign Up</a>
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <span style="color:white; margin-right:10px;">@User.Identity.Name</span>
+                    <a href="/registration/log-out" class="btn btn-primary" style="color:white;">Logout</a>
+                }
+                else
+                {
+                    <a href="/registration/sign-up" class="btn btn-primary">Sign Up</a>
+                }
             </div>
         </nav>
     </header>
@@ -47,11 +55,45 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - RolsaTechnologies - <a asp-area="" asp-page="/Privacy">Privacy</a>
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-middle">
+                <h5>Want to stay up to date?</h5>
+                <p>Need information about all the new green energy products or discounts that you may be able to get?</p>
+                <div class="newsletter">
+                    <input type="email" placeholder="Email Address">
+                    <button type="submit">Sign up ></button>
+                </div>
+                <p>&copy; Rolsa Technologies 2024-2025</p>
+            </div>
+
+            <div class="footer-right">
+                <div class="footer-links">
+                    <div>
+                        <h5>Information</h5>
+                        <a href="/">Home</a>
+                        <a href="/about-us">About us</a>
+                        <a href="#">Green Energy</a>
+                    </div>
+                    <div>
+                        <h5>Calculate</h5>
+                        <a href="#">Carbon Footprint</a>
+                        <a href="#">Energy Usage</a>
+                    </div>
+                    <div>
+                        <h5>Policy</h5>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms and Conditions</a>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <p>📞 01234 56789</p>
+                    <p>📧 rolsatechnologies@email.co.uk</p>
+                </div>
+            </div>
         </div>
     </footer>
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
