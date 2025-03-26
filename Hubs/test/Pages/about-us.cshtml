@@ -1,0 +1,87 @@
+@page
+@model AboutUsModel
+@{
+    ViewData["Title"] = "About Us";
+}
+
+<div class="about-us-container">
+    <div class="about-left">
+        <h2>About Rolsa Technologies</h2>
+        <p>At Rolsa Technologies, we are committed to providing innovative and sustainable solar energy solutions. Our mission is to help homeowners transition to clean energy while reducing their carbon footprint.</p>
+    </div>
+    <div class="about-right">
+        <img src="https://images.pexels.com/photos/8853507/pexels-photo-8853507.jpeg?auto=compress&cs=tinysrgb&w=500" alt="About Us Image">
+    </div>
+</div>
+
+<div class="faq-container">
+    <h2 class="faq-title">Frequently Asked Questions</h2>
+    <div class="faq-content">
+        <!-- Left Column -->
+        <div class="faq-column">
+            <div class="faq-item">
+                <img src="~/images/questionmark.png" class="faq-icon" alt="Question Mark Icon">
+                <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq1">
+                    How do solar panels work?
+                </button>
+            </div>
+            <div id="faq1" class="collapse faq-answer">
+                Solar panels convert sunlight into electricity using photovoltaic cells.
+            </div>
+
+            <div class="faq-item">
+                <img src="~/images/questionmark.png" class="faq-icon" alt="Question Mark Icon">
+                <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq2">
+                    Are solar panels expensive?
+                </button>
+            </div>
+            <div id="faq2" class="collapse faq-answer">
+                The cost has significantly decreased, and there are tax credits available.
+            </div>
+
+            <div class="faq-item">
+                <img src="~/images/questionmark.png" class="faq-icon" alt="Question Mark Icon">
+                <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq3">
+                    What maintenance do solar panels require?
+                </button>
+            </div>
+            <div id="faq3" class="collapse faq-answer">
+                They require occasional cleaning and professional inspections.
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="faq-column">
+            <div class="faq-item">
+                <img src="~/images/questionmark.png" class="faq-icon" alt="Question Mark Icon">
+                <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq4">
+                    How much can I save with solar energy?
+                </button>
+            </div>
+            <div id="faq4" class="collapse faq-answer">
+                Savings vary, but solar energy can cut electricity bills by up to 70%.
+            </div>
+
+            <div class="faq-item">
+                <img src="~/images/questionmark.png" class="faq-icon" alt="Question Mark Icon">
+                <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq5">
+                    How long do solar panels last?
+                </button>
+            </div>
+            <div id="faq5" class="collapse faq-answer">
+                Solar panels typically last 25-30 years with proper care.
+            </div>
+
+            <div class="faq-item">
+                <img src="~/images/questionmark.png" class="faq-icon" alt="Question Mark Icon">
+                <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq6">
+                    Do solar panels work on cloudy days?
+                </button>
+            </div>
+            <div id="faq6" class="collapse faq-answer">
+                Yes! They still generate electricity, just at a lower efficiency.
+            </div>
+        </div>
+    </div>
+</div>
+
