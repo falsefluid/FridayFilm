@@ -1,2 +1,7 @@
 dotnet new webapp -o RolsaTechnologies
 code -r RolsaTechnologies
+
+
+
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Design
