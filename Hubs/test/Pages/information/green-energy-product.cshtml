@@ -1,0 +1,84 @@
+@page
+@model GreenEnergyModel
+@{
+}
+
+<h2 class="text-center mt-4">Articles</h2>
+<p class="text-center">Stay up to date with the latest articles</p>
+<div class="article-carousel-container">
+    <button id="left-arrow" class="carousel-btn left" onclick="moveCarousel(-1, 'recently-added')">&#10094;</button>
+    <div class="article-carousel recently-added">
+        @foreach (var article in Model.Articles)
+        {
+            <div class="article-card">
+                <div class="article-image-container">
+                    <img src="@article.ImageURL" alt="Article Image" class="article-image"/>
+                </div>
+                <div class="article-info">
+                    <h2 class="article-title">@Html.DisplayFor(modelItem => article.Title)</h2>
+                    <div class="view-button-container"> 
+                        <a asp-page="/#" asp-route-id="@article.AID" class="service-btn">View Now</a>
+                    </div>
+                </div>
+            </div>   
+        }
+    </div>
+    <button id="right-arrow" class="carousel-btn right" onclick="moveCarousel(1, 'recently-added')">&#10095;</button>
+</div>
+
+@section Scripts {
+    <script>
+        const articlesToShow = 3;  // Number of articles to display at a time
+        let currentIndexRecentlyAdded = 0;  // Initialize the current index for the 'recently-added' articles
+
+        function updateCarousel(carouselClass, currentIndex) {
+            const articleCards = document.querySelectorAll(`.${carouselClass} .article-card`);
+            const totalArticles = articleCards.length;
+
+            // Hide all article cards initially
+            articleCards.forEach((card, index) => {
+                card.style.display = 'none';
+            });
+
+            // Display the articles based on the current index
+            for (let i = 0; i < articlesToShow; i++) {
+                let displayIndex = (currentIndex + i) % totalArticles;
+                if (displayIndex < 0) {
+                    displayIndex += totalArticles;
+                }
+                articleCards[displayIndex].style.display = 'block';
+            }
+
+            // Update arrow button states for the recently-added section
+            if (carouselClass === 'recently-added') {
+                document.getElementById('left-arrow').classList.toggle('disabled', currentIndex === 0);
+                document.getElementById('right-arrow').classList.toggle('disabled', currentIndex + articlesToShow >= totalArticles);
+            }
+        }
+
+        function moveCarousel(direction, carouselClass) {
+            let currentIndex = carouselClass === 'recently-added' ? currentIndexRecentlyAdded : 0;
+
+            currentIndex += direction;
+            const articleCards = document.querySelectorAll(`.${carouselClass} .article-card`);
+            const totalArticles = articleCards.length;
+
+            if (currentIndex < 0) {
+                currentIndex = 0;
+            } else if (currentIndex + articlesToShow > totalArticles) {
+                currentIndex = totalArticles - articlesToShow;
+            }
+
+            // Update the global index for recently added
+            if (carouselClass === 'recently-added') {
+                currentIndexRecentlyAdded = currentIndex;
+            }
+
+            updateCarousel(carouselClass, currentIndex);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCarousel('recently-added', currentIndexRecentlyAdded);
+        });
+    </script>
+}

@@ -19,7 +19,13 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -30,7 +36,6 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
-
 
 /* Index.cshtml */
 .installation-info-container{
@@ -52,7 +57,7 @@ body {
 
 .flex-right-installation img {
   width: 600px;
-  height: 460px;
+  height: 450px;
   object-fit: cover;
 }
 
@@ -62,48 +67,49 @@ body {
 
 .schedule-now-container {
   text-align: center;
-  margin-top: 40px;
-  width: 100%;
+  margin-top: 30px;
 }
 
 .schedule-now-btn {
   display: inline-block;
-  padding: 10px 15px;
-  background-color: #ff9900;
+  background-color: #94AE89;
   color: white;
+  padding: 10px 15px;
   text-decoration: none;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 14px;
   transition: background-color 0.3s;
-  display: block;
   width: 100%;
-  text-align: center;
+}
+
+.schedule-now-btn:hover {
+  background-color: #849b7b;
 }
 
 .extra-services-container {
-  display: flex;
+  display:flex;
   justify-content: space-around;
-  margin-top: 50px;
+  margin-top:50x;
 }
 
 .service-box {
-  width: 45%;
+  width:45%;
   text-align: center;
   background: #f8f9fa;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
 }
 
 .service-box img {
-  width: 100%;
+  width:100%;
   height: 200px;
   object-fit: cover;
   border-radius: 10px;
 }
 
 .service-box h3 {
-  margin-top: 15px;
+  margin-top:15px;
   font-size: 20px;
   color: #28a745;
 }
@@ -111,13 +117,13 @@ body {
 .service-box p {
   font-size: 16px;
   margin: 10px 0;
-  color: #555;
+  color: gray;
 }
 
 .service-btn {
   display: inline-block;
   padding: 10px 15px;
-  background-color: #ff9900;
+  background-color: #94AE89;
   color: white;
   text-decoration: none;
   border-radius: 5px;
@@ -126,16 +132,16 @@ body {
 }
 
 .service-btn:hover {
-  background-color: #e68500;
+  background-color: #849b7b;
 }
 
 /* about-us.cshtml */
 
 .about-us-container {
-  display: flex;
-  align-items: center;
+  display:flex;
+  align-items:center;
   justify-content: space-between;
-  background-color: #e3f2e1; /* Light Green Shade */
+  background-image: linear-gradient(to right, #C0DA74, #BEEDAA);
   padding: 50px;
   border-radius: 10px;
 }
@@ -146,15 +152,10 @@ body {
 }
 
 .about-left h2 {
-  font-size: 32px;
-  color: #1e5631; /* Dark Green */
+  font-size: 88px;
+  color: #1e5631;
   margin-bottom: 15px;
-}
-
-.about-left p {
-  font-size: 18px;
-  color: #333;
-  line-height: 1.6;
+  text-align:right;
 }
 
 .about-right {
@@ -169,6 +170,16 @@ body {
   border-radius: 10px;
 }
 
+.about-info {
+  padding-top: 20px;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+.about-info p {
+  font-size: 20px;
+}
+
 .faq-container {
   background-color: #f9f9f9;
   padding: 50px;
@@ -178,21 +189,21 @@ body {
 
 .faq-title {
   font-size: 28px;
-  color: #1e5631; /* Dark Green */
-  margin-bottom: 30px;
+  color: #1e5631;
+  margin-bottom:30px;
 }
 
 .faq-content {
-  display: flex;
+  display:flex;
   justify-content: space-between;
   max-width: 900px;
   margin: auto;
 }
 
 .faq-column {
-  width: 45%;
   display: flex;
   flex-direction: column;
+  width: 45%;
   gap: 20px;
 }
 
@@ -202,7 +213,7 @@ body {
   background: white;
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
 }
 
 .faq-icon {
@@ -237,12 +248,13 @@ body {
 }
 
 /* login.cshtml + sign-up.cshtml */
+
 .login {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding-top: 150px;
+  padding-top: 110px;
 }
 
 .login-container {
@@ -250,7 +262,7 @@ body {
   color: white;
   padding: 40px;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,.1);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
   width: 100%;
   max-width: 400px;
   text-align: center;
@@ -259,4 +271,202 @@ body {
 .login-container .form-control {
   border-radius: 20px;
   margin-bottom: 20px;
+}
+
+/* reduce-carbon-footprint.cshtml */
+.carbon-container {
+  display: flex;
+  align-items: stretch; /* Ensures both image and text align properly */
+  justify-content: center;
+  background: #f9f9f9;
+  padding: 40px;
+  border-radius: 10px;
+  max-width: 1200px;
+  margin: 20px auto; /* Adds space between the two containers */
+  box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+}
+
+.carbon-image {
+  display: flex;
+  align-items: center; /* Centers the image vertically */
+  justify-content: center;
+  flex: 1;
+}
+
+.carbon-image img {
+  max-height: 250px; /* Adjust based on your needs */
+  width: auto;
+}
+
+.carbon-content {
+  flex: 2;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.carbon-content h2, .carbon-content h3 {
+  color: #1e5631;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.carbon-content p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.carbon-content ul {
+  padding-left: 20px;
+}
+
+.carbon-content ul li {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.reducing-carbon-container {
+  text-align: center;
+  padding: 40px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  max-width: 1200px;
+  margin: 40px auto;
+  box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+}
+
+.reducing-carbon-container h2 {
+  font-size: 24px;
+  color: #1e5631;
+  margin-bottom: 20px;
+}
+
+.carbon-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns */
+  gap: 30px; /* Space between grid items */
+  justify-content: center;
+}
+
+.carbon-item {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  gap: 15px;
+}
+
+.carbon-item img {
+  width: 100px;
+  height: 100px;
+}
+
+.carbon-item p {
+  font-size: 16px;
+  color: #555;
+  max-width: 300px;
+}
+
+
+/* green-energy-product.cshtml */
+
+.article-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  padding: 20px;
+  margin-top: 40px;
+  max-width: 90%; /* Slightly wider container */
+  margin: 0 auto; /* Center the container */
+  align-items: stretch; /* Ensure all articles have the same height */
+}
+
+.article-card {
+  background-color: #1a1a1a;
+  border-radius: 20px;
+  overflow: hidden;
+  width: 300px; /* Increased width for the articles */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column; /* Ensure the content is stacked vertically */
+  margin: 0 10px;
+}
+
+.article-image-container {
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
+  border-radius: 10px 10px 0 0;
+}
+
+.article-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+}
+
+.article-info {
+  padding: 15px; /* Kept the padding for a bit more space */
+  background-color: #1a1a1a;
+  text-align: center;
+  border-radius: 0 0 10px 10px;
+  flex-grow: 1; /* Ensure the info section takes up the remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensure the content is spaced out */
+}
+
+.article-title {
+  font-size: 18px; /* Slightly larger font size */
+  color: white;
+  margin: 10px 0; /* Slightly increased margin for title */
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limit to 2 lines */
+  line-clamp: 2; /* Standard property for compatibility */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.article-carousel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.article-carousel {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  justify-content: center;
+}
+
+.carousel-btn {
+  background-color: transparent;
+  border: none;
+  color: black;
+  font-size: 2rem;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.carousel-btn.left {
+  left: 0;
+}
+
+.carousel-btn.right {
+  right: 0;
+}
+
+.carousel-btn.disabled {
+  color: gray;
+  cursor: not-allowed;
 }
