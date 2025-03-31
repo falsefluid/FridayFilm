@@ -1,4 +1,5 @@
-Green Energy Product - Article
-Fixed Models
-Reduce-Carbon-Footprint
-Site.css stuff as well
+Site.css
+calculate/carbon-footprint.cshtml
+calculate/carbon-footprint.cshtml.cs 
+information/article.cshtml
+information/article.cshtml.cs
