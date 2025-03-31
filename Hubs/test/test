@@ -1,8 +1,7 @@
 Site.css
-calculate/carbon-footprint.cshtml
-calculate/carbon-footprint.cshtml.cs 
-calculate/carbon-results.cshtml
-calculate/carbon-results.cshtml.cs
-information/article.cshtml
-information/article.cshtml.cs
-RolsaTechnologies.cs (fix database)
+schedule.cshtml
+schedule.cshtml.cs
+schedule/consultation.cshtml
+schedule/consultation.cshtml.cs
+schedule/installation.cshtml
+schedule/installation.cshtml.cs
