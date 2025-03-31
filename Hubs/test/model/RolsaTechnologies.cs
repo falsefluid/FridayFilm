@@ -265,10 +265,7 @@ namespace RolsaTechnologies
                 AID = 1,
                 Title = "The Future of Solar Energy",
                 Description = "A deep dive into how solar energy is shaping the future of sustainable living.",
-                Content = @"<h1>The Future of Solar Energy</h1>
-                            <p>A deep dive into how solar energy is shaping the future of sustainable living.</p>
-
-                            <h2><strong>Introduction</h2>
+                Content = @"<h2>Introduction</h2>
                             <p>As the world grapples with the challenges of climate change and dwindling fossil fuel reserves, solar energy stands out as a beacon of hope for a sustainable future. With rapid advancements in technology, decreasing costs, and increasing adoption rates, solar power is poised to revolutionize the global energy landscape. But what does the future hold for solar energy, and how will it shape the way we live?</p>
 
                             <h2>Advances in Solar Technology</h2>
