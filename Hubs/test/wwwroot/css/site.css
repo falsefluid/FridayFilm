@@ -92,7 +92,7 @@ body {
 .extra-services-container {
   display:flex;
   justify-content: space-around;
-  margin-top: 50px;
+  margin-top:50x;
 }
 
 .service-box {
@@ -468,11 +468,26 @@ body {
   cursor: not-allowed;
 }
 
+/* article.cshtml */
+.article-page {
+  background-color: #f9f9f9;
+  padding: 50px;
+  border-radius: 10px;
+}
+
+.article-page img {
+  width:100%;
+  height: 600px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+
 /* calculate-carbon-footprint.cshtml */
 
 .carbon-calc {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -540,4 +555,78 @@ body {
   margin-top: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+/* installation.cshtml */
+.schedule-container {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  background: #fff;
+  padding: 40px; /* Increased padding for more spacing */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  gap: 20px;
+}
+
+.schedule-left, .schedule-right {
+  flex: 1;
+  max-width: 290px;
+  padding: 20px;
+  background-color: #f0f0f0; /* Changed background color to grey */
+  border-radius: 10px; /* Added rounded corners */
+}
+
+.schedule-form {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Increased gap for better spacing */
+  padding-top: 40px; /* Added padding to push it down */
+}
+
+.consultation-form {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Increased gap for better spacing */
+}
+
+.schedule-input, .schedule-calculator, .schedule-overall {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.schedule-input {
+  gap: 15px;
+}
+
+textarea.schedule-input {
+  resize: none;
+}
+
+.schedule-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.schedule-button {
+  padding: 10px;
+  background: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.schedule-button:hover {
+  background: #333;
+}
+
+.schedule-right h3, .schedule-right p, .schedule-right label, .schedule-right h4 {
+  margin: 5px 0;
 }

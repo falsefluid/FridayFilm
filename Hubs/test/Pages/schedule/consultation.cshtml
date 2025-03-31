@@ -1,0 +1,23 @@
+@page
+@model ConsultationModel
+@{
+    ViewData["Title"] = "Consultation";
+}
+<div class="schedule-container">
+    <div class="schedule-left">
+        <h2>Schedule a consultation with us!</h2>
+        <ul>
+            <li>We'll provide useful information so you know what you want to do for your next steps!</li>
+            <li>Discuss energy goals</li>
+            <li>Explore how solar power can enhance the value and sustainability of your development</li>
+        </ul>
+    </div>
+
+    <form method="post" class="consultation-form">
+        <input type="text" asp-for="HouseAddress" placeholder="House Address" class="schedule-input" />
+        <input type="email" id="email" name="email" placeholder="Enter your email" class="schedule-input" required />
+        <input type="date" id="date" name="date" class="schedule-input" required />
+        <textarea id="message" name="message" placeholder="Enter your message" class="schedule-input" rows="7" required></textarea>
+        <button type="submit" class="schedule-button">Schedule</button>
+    </form>
+</div>

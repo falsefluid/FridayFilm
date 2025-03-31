@@ -5,7 +5,7 @@
 }
 
 <div class="carbon-calc">
-    <h1 class="title">Carbon Footprint Calculator</h1>
+    <h2 class="text-center">Carbon Footprint Calculator</h2>
     <div class="carbon-calc-tabs">
         <button class="tab active" id="householdTab">Household</button>
         <button class="tab" id="transportTab">Transport</button>
@@ -17,32 +17,33 @@
             <!-- Household Section -->
             <div class="carbon-calc-card" id="householdSection">
                 <h2>About your household</h2>
-                <label>Number of people in the household</label>
-                <input type="number" asp-for="NumberOfPeople" min="1" max="20" required />
-                <span asp-validation-for="NumberOfPeople" class="text-danger"></span>
                 
+                <label>Number of people in the household</label>
+                <input type="number" asp-for="NumberOfPeople" min="1" max="20" required/>
+                <span asp-validaion-for="NumberOfPeople" class="text-danger"></span>
+
                 <label>Type of housing</label>
                 <select asp-for="TypeOfHousing" id="TypeOfHousing" required>
                     <option value="Apartment">Apartment</option>
-                    <option value="Detached House">Detached House</option>
-                    <option value="Townhouse">Townhouse</option>
-                    <option value="Mobile Home">Mobile Home</option>
+                    <option value="Detached">Detached</option>
+                    <option value="Semi-Detached">Semi-Detached</option>
+                    <option value="Terrace">Terrace</option>
                 </select>
-                
+
                 <label>Size of your house</label>
                 <select asp-for="HouseSize" id="HouseSize" required>
-                    <option value="Small (Under 1000 sq ft)">Small (Under 1000 sq ft)</option>
-                    <option value="Medium (1000 - 2500 sq ft)">Medium (1000 - 2500 sq ft)</option>
-                    <option value="Large (2500+ sq ft)">Large (2500+ sq ft)</option>
+                    <option value="Small">Small (Under 1000 sq ft)</option>
+                    <option value="Medium">Medium (1000 - 2500 sq ft)</option>
+                    <option value="Large">Large (2500+ sq ft)</option>
                 </select>
-                
+
                 <label>How do you heat your home?</label>
                 <select asp-for="HeatingMethod" id="HeatingMethod" required>
-                    <option value="Natural Gas">Natural Gas</option>
-                    <option value="Electricity">Electricity</option>
+                    <option value="Gas">Natural Gas</option>
                     <option value="Oil">Oil</option>
+                    <option value="Electricity">Electricity</option>
                     <option value="Wood">Wood</option>
-                    <option value="Solar">Solar</option>
+                    <option value="Heat Pump">Heat Pump</option>
                 </select>
             </div>
 
@@ -67,32 +68,33 @@
                     <option value="Weekly">Weekly</option>
                     <option value="Monthly">Monthly</option>
                     <option value="Rarely">Rarely</option>
+                    <option value="Never">Never</option>
                 </select>
             </div>
 
             <!-- Lifestyle Section -->
             <div class="carbon-calc-card" id="lifestyleSection" style="display: none;">
                 <h2>Lifestyle Information</h2>
+                
                 <label>How often do you buy new clothes?</label>
                 <select asp-for="ClothingPurchaseFrequency" id="ClothingPurchaseFrequency" required>
-                    <option value="Rarely">Rarely</option>
-                    <option value="Occasionally">Occasionally</option>
-                    <option value="Frequently">Frequently</option>
+                    <option value ="Rarely">Rarely</option>
+                    <option value ="Occasionally">Occasionally</option>
+                    <option value ="Frequently">Frequently</option>
                 </select>
-                
+
                 <label>Do you recycle regularly?</label>
                 <select asp-for="RecyclesRegularly" id="RecyclesRegularly" required>
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                 </select>
-                
+
                 <label>Do you purchase sustainable products?</label>
                 <select asp-for="PurchasesSustainableProducts" id="PurchasesSustainableProducts" required>
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                 </select>
             </div>
-
             <button type="submit" id="nextButton">Next ></button>
             <div id="errorMessage" style="color: red; display: none;">Please select all the required options.</div>
         </form>

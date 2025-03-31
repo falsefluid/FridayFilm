@@ -1,0 +1,13 @@
+@page
+@model ScheduleModel
+@{
+    ViewData["Title"] = "Scheduling";
+}
+
+<div class="schedule-options-container">
+    <h1>Select Your Scheduling Option</h1>
+    <div class="schedule-options">
+        <a class="schedule-option-btn" asp-page="/schedule/installation">Solar Panel Installation</a>
+        <a class="schedule-option-btn" asp-page="/schedule/consultation">Personal Consultation</a>
+    </div>
+</div>

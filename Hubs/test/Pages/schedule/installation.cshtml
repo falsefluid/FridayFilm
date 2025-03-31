@@ -1,0 +1,86 @@
+@page
+@model InstallationModel
+@{
+    ViewData["Title"] = "Solar Panel Installation";
+}
+<div class="schedule-container">
+    <div class="schedule-left">
+        <h2>Schedule your solar panel installation today!</h2>
+        <ul>
+            <li>Installed by hardworking and friendly engineers</li>
+            <li>Low solar panel prices</li>
+            <li>Satisfying customers is our priority!</li>
+        </ul>
+    </div>
+
+    <form method="post" class="schedule-form">
+        <input type="text" asp-for="HouseAddress" placeholder="House Address" class="schedule-input" />
+        <select asp-for="HouseType" class="schedule-input" id="houseType" onchange="calculatePrice()">
+            <option value="">Select House Type</option>
+            <option value="Apartment">Apartment</option>
+            <option value="Detached">Detached</option>
+            <option value="Semi-detached">Semi-detached</option>
+            <option value="Terrace">Terrace</option>
+        </select>
+        <input type="number" asp-for="Bedrooms" id="Bedrooms" placeholder="Number of bedrooms" class="schedule-input" oninput="calculatePrice()" />
+        <input type="date" asp-for="InstallationDate" class="schedule-input" />
+        <label class="schedule-checkbox">
+            <input type="checkbox" asp-for="IncludeBatteries" id="includeBatteries" onchange="calculatePrice()" /> Include batteries? (+$3000)
+        </label>
+        <button type="submit" class="schedule-button">Schedule</button>
+    </form>
+
+    <div class="schedule-right">
+        <h3>Price Calculator</h3>
+        <p>Want to know how the pricing works? This makes it easier and simple.</p>
+        <label>House Type <input type="text" id="breakdownHouse" class="schedule-calculator" readonly></label>
+        <label>Number of Bedrooms <input type="text" id="breakdownBedrooms" class="schedule-calculator" readonly></label>
+        <label>Including Batteries <input type="text" id="breakdownBatteries" class="schedule-calculator" readonly></label>
+        <h4>Overall Cost:</h4>
+        <input type="text" id="totalPrice" class="schedule-overall" readonly>
+    </div>
+</div>
+
+<script>
+    function calculatePrice() {
+        // Get the selected house type and assign a price based on the type
+        const houseTypeElement = document.getElementById("houseType");
+        const houseType = houseTypeElement.value;
+        let houseTypePrice = 0;
+
+        switch (houseType) {
+            case "Apartment":
+                houseTypePrice = 5000; // Example price for Apartment
+                break;
+            case "Detached":
+                houseTypePrice = 10000; // Example price for Detached
+                break;
+            case "Semi-detached":
+                houseTypePrice = 8000; // Example price for Semi-detached
+                break;
+            case "Terrace":
+                houseTypePrice = 7000; // Example price for Terrace
+                break;
+            default:
+                houseTypePrice = 0; // Default price if no house type is selected
+        }
+
+        // Get the number of bedrooms
+        const bedroomsElement = document.getElementById("Bedrooms"); // Use the id attribute
+        const bedrooms = parseInt(bedroomsElement?.value || 0); // Safely access the value
+
+        // Check if batteries are included
+        const includeBatteries = document.getElementById("includeBatteries").checked;
+        const batteryCost = includeBatteries ? 3000 : 0;
+
+        // Calculate the total cost
+        const bedroomCost = bedrooms * 1500; // Example cost per bedroom
+        const total = houseTypePrice + bedroomCost + batteryCost;
+
+        // Update the price breakdown fields
+        document.getElementById("breakdownHouse").value = "$" + houseTypePrice.toLocaleString();
+        document.getElementById("breakdownBedrooms").value = "$" + bedroomCost.toLocaleString();
+        document.getElementById("breakdownBatteries").value = "$" + batteryCost.toLocaleString();
+        document.getElementById("totalPrice").value = "$" + total.toLocaleString();
+    }
+</script>

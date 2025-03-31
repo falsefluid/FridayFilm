@@ -3,77 +3,72 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace RolsaTechnologies.Pages;
 
-public class CalculateCarbonModel : PageModel
-{
+public class CalculateCarbonModel : PageModel {
+    // Household Section
     [BindProperty]
-    public int NumberOfPeople { get; set; }
-
+    public int NumberOfPeople {get;set;}
     [BindProperty]
-    public required string TypeOfHousing { get; set; }
-
+    public required string TypeOfHousing {get;set;}
     [BindProperty]
-    public required string HouseSize { get; set; }
-
+    public required string HouseSize {get;set;}
     [BindProperty]
-    public required string HeatingMethod { get; set; }
+    public required string HeatingMethod {get;set;}
 
     // Transport Section
     [BindProperty]
-    public required string UsesPublicTransport { get; set; }
-
+    public required string UsesPublicTransport {get;set;}
     [BindProperty]
-    public required string OwnsCar { get; set; }
-
+    public required string OwnsCar {get;set;}
     [BindProperty]
-    public required string DrivingFrequency { get; set; }
-
+    public required string DrivingFrequency {get;set;}
+    
     // Lifestyle Section
     [BindProperty]
-    public required string ClothingPurchaseFrequency { get; set; }
-
+    public required string ClothingPurchaseFrequency {get;set;}
     [BindProperty]
-    public required string RecyclesRegularly { get; set; }
-
+    public required string RecyclesRegularly {get;set;}
     [BindProperty]
-    public required string PurchasesSustainableProducts { get; set; }
-    public double CarbonFootprint { get; set; }
+    public required string PurchasesSustainableProducts{get;set;}
+
+    public double CarbonFootprint {get;set;}
 
     private double GetHouseholdFootprint()
     {
+        // All calculation will be placeholders - Change if you need
         double footprint = 0;
-
-        // Number of people in the household 
+        
+        // Number of people in the household
         footprint += NumberOfPeople * 100;
 
-        // Housing type multiplier
+        // House type
         if (TypeOfHousing == "Apartment")
-            footprint += 500; // Apartment carbon footprint multiplier
+            footprint += 500;
         else if (TypeOfHousing == "Detached House")
-            footprint += 1000; // Detached house multiplier
-        else if (TypeOfHousing == "Townhouse")
-            footprint += 700; // Townhouse multiplier
-        else if (TypeOfHousing == "Mobile Home")
-            footprint += 300; // Mobile home multiplier
-
-        // House size multiplier (assuming average size-based increase)
-        if (HouseSize == "Small (Under 1000 sq ft)")
-            footprint += 300;
-        else if (HouseSize == "Medium (1000 - 2500 sq ft)")
+            footprint += 1000;
+        else if (TypeOfHousing == "Semi-Detached")
+            footprint += 800;
+        else if (TypeOfHousing == "Terrace")
             footprint += 600;
-        else if (HouseSize == "Large (2500+ sq ft)")
+
+        // House size
+        if (HouseSize == "Small")
+            footprint += 300;
+        else if (HouseSize == "Medium")
+            footprint += 600;
+        else if (HouseSize == "Large")
             footprint += 1000;
 
-        // Heating method multiplier
-        if (HeatingMethod == "Natural Gas")
-            footprint += 500; // Average CO2 for natural gas heating
-        else if (HeatingMethod == "Electricity")
-            footprint += 300; // Average CO2 for electric heating
+        // Heating method
+        if (HeatingMethod == "Gas")
+            footprint += 500;
         else if (HeatingMethod == "Oil")
-            footprint += 800; // Oil heating multiplier
+            footprint += 800;
+        else if (HeatingMethod == "Electricity")
+            footprint += 200;
         else if (HeatingMethod == "Wood")
-            footprint += 400; // Wood heating multiplier
-        else if (HeatingMethod == "Solar")
-            footprint += 50; // Solar heating multiplier (lower impact)
+            footprint += 400;
+        else if (HeatingMethod == "Heat Pump")
+            footprint += 300;
 
         return footprint;
     }
@@ -82,23 +77,21 @@ public class CalculateCarbonModel : PageModel
     {
         double footprint = 0;
 
-        // Public transport usage multiplier
+        // Public Transport
         if (UsesPublicTransport == "Yes")
-            footprint += 100; // Lower footprint for public transport users
-        else
-            footprint += 500; // Higher footprint for non-users (owning cars)
-
-        // Car ownership multiplier
+            footprint += 100;
+        
+        // Car Ownership
         if (OwnsCar == "Yes")
         {
             if (DrivingFrequency == "Daily")
-                footprint += 1500; // High carbon footprint for daily drivers
+                footprint += 1500;
             else if (DrivingFrequency == "Weekly")
-                footprint += 700; // Moderate footprint for weekly drivers
+                footprint += 300;
             else if (DrivingFrequency == "Monthly")
-                footprint += 300; // Low footprint for monthly drivers
+                footprint += 300;
             else if (DrivingFrequency == "Rarely")
-                footprint += 100; // Very low footprint for rarely driving cars
+                footprint += 100;
         }
 
         return footprint;
@@ -108,26 +101,23 @@ public class CalculateCarbonModel : PageModel
     {
         double footprint = 0;
 
-        // Clothing purchase multiplier
         if (ClothingPurchaseFrequency == "Frequently")
-            footprint += 200; // High impact for frequent clothing purchases
+            footprint += 200;
         else if (ClothingPurchaseFrequency == "Occasionally")
-            footprint += 100; // Medium impact
+            footprint += 100;
         else
-            footprint += 50; // Low impact for rare purchases
-
-        // Recycling behavior multiplier
+            footprint += 50;
+        
         if (RecyclesRegularly == "Yes")
-            footprint -= 100; // Positive impact for regular recycling
+            footprint -= 100;
         else
-            footprint += 200; // Negative impact for no recycling
-
-        // Sustainable product purchase multiplier
+            footprint += 200;
+        
         if (PurchasesSustainableProducts == "Yes")
-            footprint -= 50; // Positive impact for sustainable product purchases
+            footprint -= 50;
         else
-            footprint += 100; // Negative impact for not purchasing sustainable products
-
+            footprint += 100;
+        
         return footprint;
     }
 
@@ -151,9 +141,7 @@ public class CalculateCarbonModel : PageModel
 
         // Round the result to 2 decimal places
         footprint = Math.Round(footprint, 2);
-        Console.WriteLine($"Calculated Carbon Footprint: {footprint}");
 
         return RedirectToPage("/calculate/carbon-results", new { carbonFootprint = footprint });
     }
-
 }

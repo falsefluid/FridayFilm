@@ -4,11 +4,12 @@
 @{
     ViewData["Title"] = Model.Article.Title;
 }
-<h1>@Model.Article.Title</h1>
-<p><strong>By:</strong> @Model.Article.Author</p>
-<p><strong>Published:</strong> @Model.Article.CreateDate.ToString("MMMM dd, yyyy")</p>
-<img src="@Model.Article.ImageURL" alt="Article Image" />
+<div class="article-page">
+    <h1>@Model.Article.Title</h1>
+    <p><strong>By:</strong> @Model.Article.Author | <strong>Published:</strong> @Model.Article.CreateDate.ToString("MMMM dd, yyyy")</p>
+    <img src="@Model.Article.ImageURL" alt="Article Image" />
 
-<div>
-    @Html.Raw(Model.Article.Content)
+    <div>
+        @Html.Raw(Model.Article.Content)
+    </div>
 </div>

@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 using RolsaTechnologies;
 using System.Threading.Tasks;
 
@@ -79,8 +82,18 @@ public class SignUpModel : PageModel
         _context.Customer.Add(newCustomer);
         await _context.SaveChangesAsync();
 
-        return RedirectToPage("/registration/login");
-    }
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, newCustomer.CID.ToString()),
+            new Claim(ClaimTypes.Name, Username ?? string.Empty)
+        };
+
+        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+        // Redirect to the home page or another page after signing in
+        return RedirectToPage("/Index");
+        }
 
     private string GenerateSalt()
     {
