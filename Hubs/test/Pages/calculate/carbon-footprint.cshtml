@@ -1,0 +1,190 @@
+@page
+@model CalculateCarbonModel
+@{
+    ViewData["Title"] = "Calculate Carbon Footprint";
+}
+
+<div class="carbon-calc">
+    <h1 class="title">Carbon Footprint Calculator</h1>
+    <div class="carbon-calc-tabs">
+        <button class="tab active" id="householdTab">Household</button>
+        <button class="tab" id="transportTab">Transport</button>
+        <button class="tab" id="lifestyleTab">Lifestyle</button>
+    </div>
+
+    <div class="carbon-calc-container">
+        <form method="post" id="carbonForm">
+            <!-- Household Section -->
+            <div class="carbon-calc-card" id="householdSection">
+                <h2>About your household</h2>
+                <label>Number of people in the household</label>
+                <input type="number" asp-for="NumberOfPeople" min="1" max="20" required />
+                <span asp-validation-for="NumberOfPeople" class="text-danger"></span>
+                
+                <label>Type of housing</label>
+                <select asp-for="TypeOfHousing" id="TypeOfHousing" required>
+                    <option value="Apartment">Apartment</option>
+                    <option value="Detached House">Detached House</option>
+                    <option value="Townhouse">Townhouse</option>
+                    <option value="Mobile Home">Mobile Home</option>
+                </select>
+                
+                <label>Size of your house</label>
+                <select asp-for="HouseSize" id="HouseSize" required>
+                    <option value="Small (Under 1000 sq ft)">Small (Under 1000 sq ft)</option>
+                    <option value="Medium (1000 - 2500 sq ft)">Medium (1000 - 2500 sq ft)</option>
+                    <option value="Large (2500+ sq ft)">Large (2500+ sq ft)</option>
+                </select>
+                
+                <label>How do you heat your home?</label>
+                <select asp-for="HeatingMethod" id="HeatingMethod" required>
+                    <option value="Natural Gas">Natural Gas</option>
+                    <option value="Electricity">Electricity</option>
+                    <option value="Oil">Oil</option>
+                    <option value="Wood">Wood</option>
+                    <option value="Solar">Solar</option>
+                </select>
+            </div>
+
+            <!-- Transport Section -->
+            <div class="carbon-calc-card" id="transportSection" style="display: none;">
+                <h2>Transport Information</h2>
+                <label>Do you use public transport?</label>
+                <select asp-for="UsesPublicTransport" id="UsesPublicTransport" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                
+                <label>Do you own a car?</label>
+                <select asp-for="OwnsCar" id="OwnsCar" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                
+                <label>How often do you drive?</label>
+                <select asp-for="DrivingFrequency" id="DrivingFrequency" required>
+                    <option value="Daily">Daily</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Monthly">Monthly</option>
+                    <option value="Rarely">Rarely</option>
+                </select>
+            </div>
+
+            <!-- Lifestyle Section -->
+            <div class="carbon-calc-card" id="lifestyleSection" style="display: none;">
+                <h2>Lifestyle Information</h2>
+                <label>How often do you buy new clothes?</label>
+                <select asp-for="ClothingPurchaseFrequency" id="ClothingPurchaseFrequency" required>
+                    <option value="Rarely">Rarely</option>
+                    <option value="Occasionally">Occasionally</option>
+                    <option value="Frequently">Frequently</option>
+                </select>
+                
+                <label>Do you recycle regularly?</label>
+                <select asp-for="RecyclesRegularly" id="RecyclesRegularly" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                
+                <label>Do you purchase sustainable products?</label>
+                <select asp-for="PurchasesSustainableProducts" id="PurchasesSustainableProducts" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <button type="submit" id="nextButton">Next ></button>
+            <div id="errorMessage" style="color: red; display: none;">Please select all the required options.</div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById("carbonForm").onsubmit = function (event) {
+        let isValid = true;
+        let errorMessage = document.getElementById("errorMessage");
+
+        // Get values for all form fields
+        const numberOfPeople = document.getElementById("NumberOfPeople").value;
+        const typeOfHousing = document.getElementById("TypeOfHousing").value;
+        const houseSize = document.getElementById("HouseSize").value;
+        const heatingMethod = document.getElementById("HeatingMethod").value;
+        const usesPublicTransport = document.getElementById("UsesPublicTransport").value;
+        const ownsCar = document.getElementById("OwnsCar").value;
+        const drivingFrequency = document.getElementById("DrivingFrequency").value;
+        const clothingPurchaseFrequency = document.getElementById("ClothingPurchaseFrequency").value;
+        const recyclesRegularly = document.getElementById("RecyclesRegularly").value;
+        const purchasesSustainableProducts = document.getElementById("PurchasesSustainableProducts").value;
+
+        // Validation check
+        if (
+            !numberOfPeople || !typeOfHousing || !houseSize || !heatingMethod ||
+            !usesPublicTransport || !ownsCar || !drivingFrequency || 
+            !clothingPurchaseFrequency || !recyclesRegularly || !purchasesSustainableProducts
+        ) {
+            isValid = false;
+        }
+
+        if (!isValid) {
+            errorMessage.style.display = "block";
+            event.preventDefault();
+        } else {
+            errorMessage.style.display = "none";
+
+            // Determine which tab is active and switch to the next one
+            const currentTab = document.querySelector('.tab.active');
+            let nextTab;
+
+            if (currentTab.id === 'householdTab') {
+                nextTab = document.getElementById('transportTab');
+            } else if (currentTab.id === 'transportTab') {
+                nextTab = document.getElementById('lifestyleTab');
+            }
+
+            // Switch to the next tab
+            switchTab(nextTab);
+            event.preventDefault();
+        }
+    };
+
+    function switchTab(tab) {
+        // Reset all tabs to normal
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(function (tabElement) {
+            tabElement.classList.remove('active');
+            tabElement.classList.remove('grey-tab'); // Remove grey color from all tabs
+        });
+
+        // Set current tab as active and grey
+        tab.classList.add('active');
+        tab.classList.add('grey-tab');
+
+        // Hide all sections
+        const sections = document.querySelectorAll('.carbon-calc-card');
+        sections.forEach(function (section) {
+            section.style.display = 'none';
+        });
+
+        // Show the relevant section based on the tab clicked
+        if (tab.id === 'householdTab') {
+            document.getElementById("householdSection").style.display = "block";
+        } else if (tab.id === 'transportTab') {
+            document.getElementById("transportSection").style.display = "block";
+        } else if (tab.id === 'lifestyleTab') {
+            document.getElementById("lifestyleSection").style.display = "block";
+        }
+    }
+
+    // Tab click events
+    document.getElementById("householdTab").onclick = function () {
+        switchTab(this);
+    };
+
+    document.getElementById("transportTab").onclick = function () {
+        switchTab(this);
+    };
+
+    document.getElementById("lifestyleTab").onclick = function () {
+        switchTab(this);
+    };
+</script>

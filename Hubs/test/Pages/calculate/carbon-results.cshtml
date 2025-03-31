@@ -1,0 +1,15 @@
+@page
+@model CarbonResultsModel
+@{
+    ViewData["Title"] = "Carbon Footprint Results";
+}
+
+<div class="carbon-calc">
+    <div class="carbon-calc-container">
+        <div class="carbon-calc-card">
+            <h1>Your Carbon Footprint</h1>
+            <p>Your total carbon footprint is: <strong>@Model.CarbonFootprint</strong> kg CO2 per year</p>
+            <a href="/" class="start-over-btn">Start Over</a>
+        </div>
+    </div>
+</div>

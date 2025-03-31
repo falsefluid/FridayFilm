@@ -31,13 +31,32 @@ a {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+/* Navbar */
+
+.navbar {
+  background-color: #f5f6f4 !important;
+  margin-bottom: 30px;
 }
 
+.navbar .nav-link, .navbar .navbar-brand, .navbar .dropdown-toggle {
+  color: black !important;
+}
+
+.navbar .btn-primary {
+  background-color: #218838 !important;
+  border-color: #1e7e34 !important;
+}
+
+.navbar .btn-primary:hover {
+  background-color: #1e7e34 !important;
+  border-color: #1c7430 !important;
+}
+
+/* Footer */
+
 .footer {
-  background-color: #f8f9fa;
+  margin-top: 110px;
+  background-color: #f5f6f4;
   padding: 20px 0;
   border-top: 1px solid #e5e5e5;
   height: auto; /* Adjusts based on content */
@@ -124,27 +143,4 @@ button.accept-policy {
 
 .contact-info {
   text-align: right;
-}
-
-
-.navbar {
-  background-color: #28a745 !important; /* Green navbar */
-}
-
-.navbar .nav-link, .navbar .navbar-brand, .navbar .dropdown-toggle {
-  color: white !important; /* White text for contrast */
-}
-
-.navbar .nav-link:hover, .navbar .dropdown-toggle:hover {
-  color: #d4edda !important; /* Lighter green on hover */
-}
-
-.navbar .btn-primary {
-  background-color: #218838 !important; /* Darker green for button */
-  border-color: #1e7e34 !important;
-}
-
-.navbar .btn-primary:hover {
-  background-color: #1e7e34 !important;
-  border-color: #1c7430 !important;
 }

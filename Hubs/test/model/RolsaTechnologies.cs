@@ -303,10 +303,7 @@ namespace RolsaTechnologies
                 AID = 2,
                 Title = "Top 5 Renewable Energy Technologies of 2025",
                 Description = "Exploring the most innovative renewable energy technologies that are revolutionizing the industry.",
-                Content = @"<h1>Top 5 Renewable Energy Technologies of 2025</h1>
-                            <p>Exploring the most innovative renewable energy technologies that are revolutionizing the industry.</p>
-
-                            <h2>Introduction</h2>
+                Content = @"<h2>Introduction</h2>
                             <p>As the world accelerates toward sustainability, renewable energy technologies are playing a pivotal role in reshaping the global energy landscape. With the year 2025 on the horizon, several innovations are set to push the boundaries of what’s possible, offering cleaner, more efficient alternatives to fossil fuels. This article takes a deep dive into the top five renewable energy technologies that are expected to revolutionize the industry in the coming years.</p>
 
                             <h2>1. Solar Photovoltaics (PV) with Advanced Materials</h2>
@@ -336,10 +333,7 @@ namespace RolsaTechnologies
                 AID = 3,
                 Title = "How Homeowners Can Benefit from Solar Panel Installations",
                 Description = "Understanding the advantages of solar panel installations for residential homes.",
-                Content = @"<h1>How Homeowners Can Benefit from Solar Panel Installations</h1>
-                            <p>Understanding the advantages of solar panel installations for residential homes.</p>
-
-                            <h2>Introduction</h2>
+                Content = @"<h2>Introduction</h2>
                             <p>As the demand for renewable energy continues to rise, solar panels have become an increasingly popular choice for homeowners looking to reduce their environmental impact and save on energy costs. Installing solar panels on your home not only provides a clean, renewable energy source but also offers a host of financial, environmental, and practical benefits. In this article, we’ll explore the advantages that homeowners can enjoy by making the switch to solar energy.</p>
 
                             <h2>1. Significant Reduction in Energy Bills</h2>
@@ -375,10 +369,7 @@ namespace RolsaTechnologies
                 AID = 4,
                 Title = "Wind Energy: A Key Player in the Renewable Revolution",
                 Description = "How wind energy is contributing to global efforts in reducing carbon footprints.",
-                Content = @"<h1>Wind Energy: A Key Player in the Renewable Revolution</h1>
-                            <p>How wind energy is contributing to global efforts in reducing carbon footprints.</p>
-
-                            <h2>Introduction</h2>
+                Content = @"<h2>Introduction</h2>
                             <p>As the world races to combat climate change, wind energy has emerged as one of the most promising and efficient renewable energy sources. With its ability to generate large amounts of electricity without emitting carbon dioxide, wind energy is playing a pivotal role in the global shift toward cleaner, more sustainable energy systems. This article delves into how wind energy is contributing to the fight against climate change and reducing global carbon footprints.</p>
 
                             <h2>1. A Clean and Renewable Energy Source</h2>
@@ -423,10 +414,7 @@ namespace RolsaTechnologies
                 AID = 5,
                 Title = "Understanding the Role of Battery Storage in Renewable Energy",
                 Description = "Battery storage is revolutionizing how we store and use renewable energy.",
-                Content = @"<h1>Understanding the Role of Battery Storage in Renewable Energy</h1>
-                            <p>Battery storage is revolutionizing how we store and use renewable energy.</p>
-
-                            <h2>Introduction</h2>
+                Content = @"<h2>Introduction</h2>
                             <p>As the world continues its shift toward renewable energy, one of the most important advancements enabling this transition is battery storage. While renewable sources like solar and wind energy have enormous potential, they are intermittent—meaning they only generate electricity when the sun is shining or the wind is blowing. Battery storage systems are playing a pivotal role in overcoming this challenge, allowing us to store excess energy and use it when demand is high or production is low. In this article, we will explore how battery storage is revolutionizing the renewable energy landscape and enabling a more reliable, sustainable energy future.</p>
 
                             <h2>1. The Importance of Energy Storage in Renewable Systems</h2>
@@ -477,10 +465,7 @@ namespace RolsaTechnologies
                 AID = 6,
                 Title = "Hydroelectric Power: Is It the Future?",
                 Description = "Exploring the potential of hydroelectric power as a sustainable energy source.",
-                Content = @"<h1>Hydroelectric Power: Is It the Future?</h1>
-                            <p>Exploring the potential of hydroelectric power as a sustainable energy source.</p>
-
-                            <h2>Introduction</h2>
+                Content = @"<h2>Introduction</h2>
                             <p>As the world transitions toward renewable energy to address climate change, hydroelectric power remains a key player in the pursuit of clean energy. Although hydroelectric systems have been in use for centuries, their potential to contribute to a sustainable energy future is still significant. In this article, we will explore the role of hydroelectric power in our energy landscape and its potential as a long-term solution for reducing carbon emissions and supporting global sustainability.</p>
 
                             <h2>How Hydroelectric Power Works</h2>

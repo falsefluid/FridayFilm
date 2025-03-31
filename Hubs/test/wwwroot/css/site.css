@@ -19,6 +19,9 @@ html {
 }
 
 body {
+  background-image: linear-gradient(to bottom, #ADEBB3, #d6ebd8);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -89,7 +92,7 @@ body {
 .extra-services-container {
   display:flex;
   justify-content: space-around;
-  margin-top:50x;
+  margin-top: 50px;
 }
 
 .service-box {
@@ -276,34 +279,34 @@ body {
 /* reduce-carbon-footprint.cshtml */
 .carbon-container {
   display: flex;
-  align-items: stretch; /* Ensures both image and text align properly */
+  align-items: stretch;
   justify-content: center;
-  background: #f9f9f9;
+  background:#f9f9f9;
   padding: 40px;
   border-radius: 10px;
   max-width: 1200px;
-  margin: 20px auto; /* Adds space between the two containers */
-  box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+  margin: 20px auto;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1)
 }
 
 .carbon-image {
-  display: flex;
-  align-items: center; /* Centers the image vertically */
+  display:flex;
+  align-items: center;
   justify-content: center;
   flex: 1;
 }
 
 .carbon-image img {
-  max-height: 250px; /* Adjust based on your needs */
+  max-height: 250px;
   width: auto;
 }
 
 .carbon-content {
-  flex: 2;
-  padding-left: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  flex: 2;
+  padding-left: 20px;
 }
 
 .carbon-content h2, .carbon-content h3 {
@@ -314,7 +317,6 @@ body {
 
 .carbon-content p {
   font-size: 16px;
-  color: #555;
   margin-bottom: 10px;
 }
 
@@ -324,7 +326,6 @@ body {
 
 .carbon-content ul li {
   font-size: 16px;
-  color: #555;
   margin-bottom: 5px;
 }
 
@@ -335,7 +336,7 @@ body {
   border-radius: 10px;
   max-width: 1200px;
   margin: 40px auto;
-  box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
 }
 
 .reducing-carbon-container h2 {
@@ -347,15 +348,20 @@ body {
 .carbon-grid {
   display: grid;
   grid-template-columns: 1fr 1fr; /* Two columns */
-  gap: 30px; /* Space between grid items */
+  gap: 30px;
   justify-content: center;
 }
 
 .carbon-item {
-  display: flex;
+  display:flex;
   align-items: center;
   text-align: left;
   gap: 15px;
+}
+
+.carbon-item p {
+  font-size: 16px;
+  max-width: 300px;
 }
 
 .carbon-item img {
@@ -363,35 +369,27 @@ body {
   height: 100px;
 }
 
-.carbon-item p {
-  font-size: 16px;
-  color: #555;
-  max-width: 300px;
-}
-
-
-/* green-energy-product.cshtml */
-
+/* green-technology.cshtml */
 .article-container {
-  display: flex;
+  display:flex;
   flex-wrap: wrap;
   gap: 30px;
   justify-content: center;
   padding: 20px;
   margin-top: 40px;
-  max-width: 90%; /* Slightly wider container */
-  margin: 0 auto; /* Center the container */
-  align-items: stretch; /* Ensure all articles have the same height */
+  max-width: 90%;
+  margin: 0 auto;
+  align-items: stretch;
 }
 
 .article-card {
+  display:flex;
+  flex-direction: column;
   background-color: #1a1a1a;
   border-radius: 20px;
   overflow: hidden;
-  width: 300px; /* Increased width for the articles */
+  width: 300px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column; /* Ensure the content is stacked vertically */
   margin: 0 10px;
 }
 
@@ -402,34 +400,34 @@ body {
   border-radius: 10px 10px 0 0;
 }
 
-.article-image {
+.article-image-container img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 10px 10px 0 0;
 }
 
 .article-info {
-  padding: 15px; /* Kept the padding for a bit more space */
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+  padding: 15px;
   background-color: #1a1a1a;
   text-align: center;
   border-radius: 0 0 10px 10px;
-  flex-grow: 1; /* Ensure the info section takes up the remaining space */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Ensure the content is spaced out */
 }
 
 .article-title {
-  font-size: 18px; /* Slightly larger font size */
+  font-size: 16px;
   color: white;
-  margin: 10px 0; /* Slightly increased margin for title */
+  margin: 10px 0;
   display: -webkit-box;
   -webkit-line-clamp: 2; /* Limit to 2 lines */
   line-clamp: 2; /* Standard property for compatibility */
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  height: 3em;
 }
 
 .article-carousel-container {
@@ -440,7 +438,7 @@ body {
 }
 
 .article-carousel {
-  display: flex;
+  display:flex;
   overflow: hidden;
   width: 100%;
   justify-content: center;
@@ -452,10 +450,9 @@ body {
   color: black;
   font-size: 2rem;
   cursor: pointer;
-  position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 1;
+  z-index:1;
 }
 
 .carousel-btn.left {
@@ -467,6 +464,80 @@ body {
 }
 
 .carousel-btn.disabled {
-  color: gray;
+  color:gray;
   cursor: not-allowed;
+}
+
+/* calculate-carbon-footprint.cshtml */
+
+.carbon-calc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.carbon-calc button {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.carbon-calc button:hover {
+  background: #218838;
+  color: white;
+}
+
+.carbon-calc-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.carbon-calc-tabs .tab {
+  background: #ddd;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 0 45px;
+  color: black;
+}
+
+.carbon-calc-tabs .tab.active {
+  background: #666;
+  color: white;
+}
+
+.carbon-calc-container {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 500px;
+}
+
+.carbon-calc-card {
+  background: #eee;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.carbon-calc-card label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.carbon-calc-card input, .carbon-calc-card select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
