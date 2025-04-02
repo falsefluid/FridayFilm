@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
-using System.Text;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using RolsaTechnologies;
 using System.Threading.Tasks;
 
@@ -13,14 +13,15 @@ namespace RolsaTechnologies.Pages;
 
 public class SignUpModel : PageModel
 {
+    // Variables for sign up
     [BindProperty]
-    public string? Username { get; set; }
+    public string? Username {get;set;}
+    [BindProperty]
+    public string? Password {get;set;}
+    [BindProperty]
+    public string? ReEnterPassword {get;set;}
 
-    [BindProperty]
-    public string? Password { get; set; }
 
-    [BindProperty]
-    public string? ReEnterPassword { get; set; }
 
     private readonly RolsaTechnologiesContext _context;
 
@@ -31,18 +32,25 @@ public class SignUpModel : PageModel
 
     public IActionResult OnGet()
     {
+        // Check if the user is logged in
+        if (User.Identity?.IsAuthenticated ?? true)
+        {
+            // Redirect to the index page if logged in
+            return RedirectToPage("/index");
+        }
+
         return Page();
     }
-
     public async Task<IActionResult> OnPostAsync()
     {
+        // Validation for sign up
         if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password) || string.IsNullOrEmpty(ReEnterPassword))
         {
-            ModelState.AddModelError(string.Empty, "All fields are required.");
+            ModelState.AddModelError(string.Empty, "All fields are required");
             return Page();
         }
 
-        if (Username.Length > 15 || Username.Length < 3)
+        if (Username.Length < 3 || Username.Length > 15)
         {
             ModelState.AddModelError(string.Empty, "Username must be between 3 and 15 characters long.");
             return Page();
@@ -60,7 +68,6 @@ public class SignUpModel : PageModel
             return Page();
         }
 
-        // Check if username already exists
         var existingUser = await _context.Customer.SingleOrDefaultAsync(c => c.Username == Username);
         if (existingUser != null)
         {
@@ -82,21 +89,24 @@ public class SignUpModel : PageModel
         _context.Customer.Add(newCustomer);
         await _context.SaveChangesAsync();
 
+        var customer = _context.Customer.SingleOrDefault(c => c.Username == Username);
+        
         var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, newCustomer.CID.ToString()),
-            new Claim(ClaimTypes.Name, Username ?? string.Empty)
-        };
+            {
+                new Claim(ClaimTypes.NameIdentifier, customer.CID.ToString()),
+                new Claim(ClaimTypes.Name, Username ?? string.Empty)
+            };
 
-        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-        // Redirect to the home page or another page after signing in
-        return RedirectToPage("/Index");
-        }
+            // Sign in the customer with the claims
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+            return RedirectToPage("/Index");
+    }
 
-    private string GenerateSalt()
+    public string GenerateSalt()
     {
+        // Creating a salt to apply to user's password
         var saltBytes = new byte[16];
         using (var rng = RandomNumberGenerator.Create())
         {
@@ -107,6 +117,7 @@ public class SignUpModel : PageModel
 
     private string HashPassword(string password, string salt)
     {
+        // Applies salt to the password and then uses SHA256 to hash the password
         using (var sha256 = SHA256.Create())
         {
             var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password + salt));

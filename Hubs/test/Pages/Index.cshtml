@@ -1,47 +1,46 @@
 ﻿@page
 @model IndexModel
 @{
+    ViewData["Title"] = "Rolsa Technologies";
 }
-
 <div class="installation-info-container">
     <div class="flex-left-installation">
         <h2 style="padding-bottom: 10px;">Run your home with renewable solar energy today</h2>
         <p style="font-size: 22px;">Solar Powered Solutions with Rolsa Technologies</p>
         <div class="installation-text">
             <p style="line-height:27px;"> We provide: <br />
-                ✅ Information about Technologies newest green energy products<br />
-                ✅ Solutions today reducing your carbon footprint<br />
-                ✅ Consultations with everything your need today know<br />
+                ✅ Information about the newest green energy products<br />
+                ✅ Solutions to reducing your carbon footprint<br />
+                ✅ Consultations with everything you need to know<br />
                 ✅ Solar panel installations<br />
-                ✅ A way today calculate your carbon footprint<br />
-                ✅ A tracker footprint your energy usage
+                ✅ A way to calculate your carbon footprint<br />
+                ✅ A tracker for your energy usage
             </p>
         </div>
         <div class="schedule-now-container"> 
             <p style="font-size:16px; font-weight:bold; text-align:center;">Got your attention?</p>
-            <a asp-page="/schedule-now" class="schedule-now-btn">View Prices ></a>
-
+            <a asp-page="/schedule" class="schedule-now-btn">View Prices ></a>
         </div>
     </div>
     <div class="flex-right-installation">
-        <img src="https://images.pexels.com/photos/14613940/pexels-photo-14613940.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Image of Person Installating Solar Panel" style="padding-top: 15px;">
+        <img src="https://images.pexels.com/photos/14613940/pexels-photo-14613940.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Image of Person Installing Solar Panel">
     </div>
 </div>
 
-<div class="extra-services-container">
-    <!-- Carbon Footprint Section -->
+<div class="extra-services-container" style="margin-top: 50px;">
+    <!-- Green Energy Products -->
     <div class="service-box">
-        <img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Carbon Footprint Image">
-        <h3>Calculate Your Carbon Footprint</h3>
-        <p>Find out how much carbon you generate and get personalized recommendations to reduce your impact on the environment.</p>
-        <a asp-page="/calculate-carbon" class="service-btn">Calculate Now</a>
+        <img src="https://images.pexels.com/photos/433308/pexels-photo-433308.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Image of a Wind Turbine">
+        <h3>Green Energy Products</h3>
+        <p>Information about green energy can be quite hard to find. We've made it easier and simpler, all in one place for you.</p>
+        <a asp-page="/information/green-technology" class="service-btn">View now</a>
     </div>
 
-    <!-- Consultation Section -->
+    <!-- Consultation -->
     <div class="service-box">
         <img src="https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Consultation Image">
-        <h3>Book a Consultation</h3>
-        <p>Schedule a session with our experts to learn about solar solutions, installation processes, and financial incentives.</p>
-        <a asp-page="/book-consultation" class="service-btn">Book Now</a>
+        <h3>Need to know your next step?</h3>
+        <p>Book a consultation with us! We will tell you everything you need to know to support your green technology switch.</p>
+        <a asp-page="/schedule/consultation" class="service-btn">Book Now</a>
     </div>
 </div>

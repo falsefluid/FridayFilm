@@ -1,0 +1,114 @@
+@page
+@model RolsaTechnologies.Pages.SettingsModel
+@{
+    ViewData["Title"] = "Settings";
+}
+
+<div class="settings-container">
+    <!-- Sidebar -->
+    <div class="settings-sidebar">
+        <h3>Settings</h3>
+        <a href="#" class="tab-link active" data-tab="profile">Edit Profile</a>
+        <a href="#" class="tab-link" data-tab="schedules">Schedules</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="settings-content">
+        <!-- Edit Profile -->
+        <div id="profile" class="tab-content settings-card">
+            <h2>Edit Information</h2>
+            <form method="post">
+                <label>First Name</label>
+                <input type="text" asp-for="Forename" placeholder="John" value="@Model.Forename" />
+
+                <label>Last Name</label>
+                <input type="text" asp-for="Surname" placeholder="Smith" value="@Model.Surname" />
+
+                <label>Username</label>
+                <input type="text" asp-for="Username" placeholder="JSmith123" value="@Model.Username" readonly />
+
+                <label>Email</label>
+                <input type="email" asp-for="Email" placeholder="JohnSmith.Business@gmail.com" value="@Model.Email" />
+
+                <label>Phone Number</label>
+                <input type="text" asp-for="PhoneNumber" placeholder="01312345678" value="@Model.PhoneNumber" />
+
+                <div class="button-group">
+                    <button type="submit">Save</button>
+                    <button type="button" class="cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Schedules -->
+        <div id="schedules" class="tab-content settings-card" style="display: none;">
+            <h2>Schedules</h2>
+
+            <!-- Upcoming Consultations -->
+            <div class="scroll-container" style="margin-top: 50px;">
+                <h3>Upcoming Consultations</h3>
+                <div class="horizontal-scroll">
+                    @if (Model.UpcomingConsultations.Any())
+                    {
+                        @foreach (var consultation in Model.UpcomingConsultations)
+                        {
+                            <div class="scroll-item">
+                                <img src="https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Installation Image" style="width: 100%; border-radius: 10px; margin-bottom: 10px;">
+                                <p><strong>Consultation</strong></p>
+                                <p><strong>Date:</strong> @consultation.Date</p>
+                                <p><strong>Time:</strong> @consultation.Hour:00 PM</p>
+                                <p><strong>Address:</strong> @consultation.HousePostcode</p>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="scroll-item">
+                            <p>No results found.</p>
+                            <p>Want to schedule a personal consultation? <a asp-page="/schedule/consultation">Schedule now!</a></p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Upcoming Installations -->
+            <div class="scroll-container" style="margin-top: 50px;">
+                <h3>Upcoming Installations</h3>
+                <div class="horizontal-scroll">
+                    @if (Model.UpcomingInstallations.Any())
+                    {
+                        @foreach (var installation in Model.UpcomingInstallations)
+                        {
+                            <div class="scroll-item">
+                                <img src="https://images.pexels.com/photos/14613940/pexels-photo-14613940.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Installation Image" style="width: 100%; border-radius: 10px; margin-bottom: 10px;">
+                                <p><strong>Installation</strong></p>
+                                <p><strong>Date:</strong> @installation.Date</p>
+                                <p><strong>Time:</strong> @installation.Hour:00 AM</p>
+                                <p><strong>Address:</strong> @installation.HousePostcode</p>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="scroll-item">
+                            <p>No results found.</p>
+                            <p>Want to schedule a solar panel installation? <a asp-page="/schedule/installation">Schedule now!</a></p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.tab-link').forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+            document.getElementById(this.dataset.tab).style.display = 'block';
+        });
+    });
+</script>

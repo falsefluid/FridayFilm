@@ -8,7 +8,7 @@ public class InstallationModel : PageModel
 {
     private readonly ILogger<InstallationModel> _logger;
     private readonly RolsaTechnologiesContext _context;
-
+    
     public InstallationModel(ILogger<InstallationModel> logger, RolsaTechnologiesContext context)
     {
         _logger = logger;
@@ -16,19 +16,15 @@ public class InstallationModel : PageModel
     }
 
     [BindProperty]
-    public string? HouseAddress { get; set; }
-
+    public string? HouseAddress{get;set;}
     [BindProperty]
-    public string? HouseType { get; set; }
-
+    public string? HouseType{get;set;}
     [BindProperty]
-    public int? Bedrooms { get; set; }
-
+    public int? Bedrooms {get;set;}
     [BindProperty]
-    public DateTime? InstallationDate { get; set; }
-
+    public DateTime? InstallationDate {get;set;}
     [BindProperty]
-    public bool IncludeBatteries { get; set; }
+    public bool IncludeBatteries {get;set;}
 
     public IActionResult OnGet()
     {
@@ -74,26 +70,25 @@ public class InstallationModel : PageModel
         }
 
         // Save the installation to the database
-        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        if (!int.TryParse(userIdClaim, out int userId) || userId == 0)
+        var userIDClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (!int.TryParse(userIDClaim, out int userId) || userId == 0)
         {
             ModelState.AddModelError(string.Empty, "User ID is invalid.");
             return Page();
         }
-
 
         var scheduleBooking = new ScheduleBooking
         {
             ScheduleTypeID = 1, // Installation
             HousePostcode = HouseAddress,
             Date = DateOnly.FromDateTime(InstallationDate.Value),
-            Hour = 9, // Default hour for installation
+            Hour = 9, // Default hour for installation (change if need be)
             UsernameID = userId,
             EmailID = userId,
             CreateDate = DateTime.UtcNow
         };
 
-        var solarPanelInstallation = new SolarPanelInstallation
+        var solarPanelInstallation = new SolarPanelInstallation 
         {
             HouseType = HouseType,
             NumOfBedrooms = Bedrooms.Value,
@@ -110,12 +105,13 @@ public class InstallationModel : PageModel
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred while saving the installation data.");
+            _logger.LogError(ex, "An Error occurred while saving the installation date.");
             ModelState.AddModelError(string.Empty, "An error occurred while saving your data. Please try again.");
             return Page();
         }
 
         TempData["SuccessMessage"] = "Your installation has been successfully scheduled!";
         return RedirectToPage("/Index");
+
     }
 }

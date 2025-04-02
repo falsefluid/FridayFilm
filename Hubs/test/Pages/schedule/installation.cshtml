@@ -5,6 +5,7 @@
 }
 <div class="schedule-container">
     <div class="schedule-left">
+        <!-- Used for extra information that you want to give, just placeholder for now -->
         <h2>Schedule your solar panel installation today!</h2>
         <ul>
             <li>Installed by hardworking and friendly engineers</li>
@@ -14,20 +15,32 @@
     </div>
 
     <form method="post" class="schedule-form">
-        <input type="text" asp-for="HouseAddress" placeholder="House Address" class="schedule-input" />
-        <select asp-for="HouseType" class="schedule-input" id="houseType" onchange="calculatePrice()">
+        <input type="text" asp-for="HouseAddress" placeholder="House Address" class="schedule-input" oninput="calculatePrice()" required/>
+        <select asp-for="HouseType" class="schedule-input" id="houseType" onchange="calculatePrice()" required>
             <option value="">Select House Type</option>
             <option value="Apartment">Apartment</option>
             <option value="Detached">Detached</option>
             <option value="Semi-detached">Semi-detached</option>
             <option value="Terrace">Terrace</option>
         </select>
-        <input type="number" asp-for="Bedrooms" id="Bedrooms" placeholder="Number of bedrooms" class="schedule-input" oninput="calculatePrice()" />
-        <input type="date" asp-for="InstallationDate" class="schedule-input" />
+        <input type="number" asp-for="Bedrooms" id="Bedrooms" placeholder="Number of bedrooms" class="schedule-input" oninput="calculatePrice()" required/>
+        <input type="date" asp-for="InstallationDate" class="schedule-input" required/>
         <label class="schedule-checkbox">
-            <input type="checkbox" asp-for="IncludeBatteries" id="includeBatteries" onchange="calculatePrice()" /> Include batteries? (+$3000)
+            <input type="checkbox" asp-for="IncludeBatteries" id="includeBatteries" onchange="calculatePrice()"> Include batteries?
         </label>
         <button type="submit" class="schedule-button">Schedule</button>
+        @if (ModelState.ContainsKey(string.Empty) && ModelState[string.Empty]?.Errors?.Count > 0)
+        {
+            <div class="alert alert-danger">
+                @if (ModelState[string.Empty]?.Errors != null)
+                {
+                    @foreach (var error in ModelState[string.Empty]?.Errors ?? Enumerable.Empty<Microsoft.AspNetCore.Mvc.ModelBinding.ModelError>())
+                    {
+                        <p>@error.ErrorMessage</p>
+                    }
+                }
+            </div>
+        }
     </form>
 
     <div class="schedule-right">
@@ -50,16 +63,16 @@
 
         switch (houseType) {
             case "Apartment":
-                houseTypePrice = 5000; // Example price for Apartment
+                houseTypePrice = 4000; // Example price for Apartment
                 break;
             case "Detached":
-                houseTypePrice = 10000; // Example price for Detached
+                houseTypePrice = 8000; // Example price for Detached
                 break;
             case "Semi-detached":
-                houseTypePrice = 8000; // Example price for Semi-detached
+                houseTypePrice = 6500; // Example price for Semi-detached
                 break;
             case "Terrace":
-                houseTypePrice = 7000; // Example price for Terrace
+                houseTypePrice = 5500; // Example price for Terrace
                 break;
             default:
                 houseTypePrice = 0; // Default price if no house type is selected
@@ -74,13 +87,13 @@
         const batteryCost = includeBatteries ? 3000 : 0;
 
         // Calculate the total cost
-        const bedroomCost = bedrooms * 1500; // Example cost per bedroom
+        const bedroomCost = bedrooms * 500; // Example cost per bedroom
         const total = houseTypePrice + bedroomCost + batteryCost;
 
         // Update the price breakdown fields
-        document.getElementById("breakdownHouse").value = "$" + houseTypePrice.toLocaleString();
-        document.getElementById("breakdownBedrooms").value = "$" + bedroomCost.toLocaleString();
-        document.getElementById("breakdownBatteries").value = "$" + batteryCost.toLocaleString();
-        document.getElementById("totalPrice").value = "$" + total.toLocaleString();
+        document.getElementById("breakdownHouse").value = "£" + houseTypePrice.toLocaleString();
+        document.getElementById("breakdownBedrooms").value = "£" + bedroomCost.toLocaleString();
+        document.getElementById("breakdownBatteries").value = "£" + batteryCost.toLocaleString();
+        document.getElementById("totalPrice").value = "£" + total.toLocaleString();
     }
 </script>

@@ -16,15 +16,13 @@ public class ConsultationModel : PageModel
     }
 
     [BindProperty]
-    public string? HouseAddress { get; set; }
+    public string? HouseAddress{get;set;}
     [BindProperty]
-    public string? Email { get; set; }
-
+    public string? Email{get;set;}
     [BindProperty]
-    public DateTime? Date { get; set; }
-
+    public DateTime? Date{get;set;}
     [BindProperty]
-    public string? Message { get; set; }
+    public string? Message{get;set;}
 
     public IActionResult OnGet()
     {
@@ -34,7 +32,6 @@ public class ConsultationModel : PageModel
             // Redirect to the sign-up page if not logged in
             return RedirectToPage("/registration/sign-up");
         }
-
         return Page();
     }
 
@@ -43,38 +40,36 @@ public class ConsultationModel : PageModel
         // Input validation
         if (string.IsNullOrEmpty(HouseAddress) || string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Message) || Date == null)
         {
-            ModelState.AddModelError(string.Empty, "All fields are required.");
+            ModelState.AddModelError(string.Empty,"All fields are required.");
             return Page();
         }
 
         if (!Email.Contains("@") || !Email.Contains("."))
         {
-            ModelState.AddModelError(string.Empty, "Invalid email format.");
+            ModelState.AddModelError(string.Empty,"Invalid email format.");
             return Page();
         }
-
+        
         if (Date < DateTime.Today)
         {
-            ModelState.AddModelError(string.Empty, "The consultation date cannot be in the past.");
+            ModelState.AddModelError(string.Empty,"The consultation date cannot be in the past.");
             return Page();
         }
 
         if (Message.Length > 1000)
         {
-            ModelState.AddModelError(string.Empty, "The message cannot exceed 1000 characters.");
+            ModelState.AddModelError(string.Empty,"The message cannot exceed 1000 characters.");
             return Page();
         }
 
-        // Check if the user is logged in and retrieve their ID
-        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        if (!int.TryParse(userIdClaim, out int userId) || userId == 0)
+        // Save the consultation to the database
+        var userIDClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (!int.TryParse(userIDClaim, out int userId) || userId == 0)
         {
             ModelState.AddModelError(string.Empty, "User ID is invalid.");
             return Page();
         }
 
-        // Save the consultation message to the database
-        
         var scheduleBooking = new ScheduleBooking
         {
             ScheduleTypeID = 2, // Consultation
@@ -88,7 +83,7 @@ public class ConsultationModel : PageModel
 
         _context.ScheduleBooking.Add(scheduleBooking);
         await _context.SaveChangesAsync();
-        
+
         var consultationMessage = new ConsultationMessage
         {
             EmailID = userId,
