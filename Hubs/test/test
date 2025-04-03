@@ -1,6 +1,6 @@
 Site.css
 layout.cshtml <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-installation.cshtml
+installation.cshtml + .cs
 database model
 sign-up.cshtml
 login.cshtml
