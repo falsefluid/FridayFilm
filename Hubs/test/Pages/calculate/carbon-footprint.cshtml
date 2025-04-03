@@ -18,11 +18,11 @@
             <div class="carbon-calc-card" id="householdSection">
                 <h2>About your household</h2>
                 
-                <label>Number of people in the household</label>
-                <input type="number" asp-for="NumberOfPeople" min="1" max="20" required/>
+                <label>How many bedrooms does your house have?</label>
+                <input type="number" asp-for="NumberOfPeople" min="1" max="10" required/>
                 <span asp-validaion-for="NumberOfPeople" class="text-danger"></span>
 
-                <label>Type of housing</label>
+                <label>What kind of house do you live in?</label>
                 <select asp-for="TypeOfHousing" id="TypeOfHousing" required>
                     <option value="Apartment">Apartment</option>
                     <option value="Detached">Detached</option>
@@ -30,7 +30,7 @@
                     <option value="Terrace">Terrace</option>
                 </select>
 
-                <label>Size of your house</label>
+                <label>What is the size of your house?</label>
                 <select asp-for="HouseSize" id="HouseSize" required>
                     <option value="Small">Small (Under 1000 sq ft)</option>
                     <option value="Medium">Medium (1000 - 2500 sq ft)</option>
@@ -45,31 +45,45 @@
                     <option value="Wood">Wood</option>
                     <option value="Heat Pump">Heat Pump</option>
                 </select>
+
+                <label>Do you regularly turn off lights and not leave your appliances on standby?</label>
+                <select asp-for="LightsStandby" id="LightsStandby" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
             </div>
 
             <!-- Transport Section -->
             <div class="carbon-calc-card" id="transportSection" style="display: none;">
                 <h2>Transport Information</h2>
-                <label>Do you use public transport?</label>
-                <select asp-for="UsesPublicTransport" id="UsesPublicTransport" required>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                </select>
-                
+
                 <label>Do you own a car?</label>
-                <select asp-for="OwnsCar" id="OwnsCar" required>
+                <select asp-for="OwnsCar" id="OwnsCar" onchange="toggleCarDetails()">
+                    <option value=""></option>
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                 </select>
-                
-                <label>How often do you drive?</label>
-                <select asp-for="DrivingFrequency" id="DrivingFrequency" required>
-                    <option value="Daily">Daily</option>
-                    <option value="Weekly">Weekly</option>
-                    <option value="Monthly">Monthly</option>
-                    <option value="Rarely">Rarely</option>
-                    <option value="Never">Never</option>
-                </select>
+
+                <div id="carDetails" style="display: none; margin-top: 20px;">
+                    <label>What type of vehicle do you own?</label>
+                    <select asp-for="VehicleType" id="VehicleType">
+                        <option value="Electric">Electric</option>
+                        <option value="PlugInHybrid">Plug-in Hybrid</option>
+                        <option value="Hybrid">Hybrid</option>
+                        <option value="SmallPetrolDiesel">Small Petrol/Diesel</option>
+                        <option value="MediumPetrolDiesel">Medium Petrol/Diesel</option>
+                        <option value="LargePetrolDiesel">Large Petrol/Diesel</option>
+                    </select>
+
+                    <label>How many hours per week do you spend commuting in your vehicle?</label>
+                    <input type="number" asp-for="CommuteHoursPerWeek" id="CommuteHoursPerWeek" min="0" />
+                </div>
+
+                <label>How many hours per week do you travel by train?</label>
+                <input type="number" asp-for="TrainHoursPerWeek" id="TrainHoursPerWeek" min="0" required />
+
+                <label>How many hours per week do you travel by bus?</label>
+                <input type="number" asp-for="BusHoursPerWeek" id="BusHoursPerWeek" min="0" required />
             </div>
 
             <!-- Lifestyle Section -->
@@ -83,14 +97,18 @@
                     <option value ="Frequently">Frequently</option>
                 </select>
 
+                <label>How would you best describe your diet?</label>
+                    <select asp-for="DietType" id="DietType" required>
+                        <option value="MeatEveryMeal">Meat in every meal</option>
+                        <option value="MeatSomeMeals">Meat in some meals</option>
+                        <option value="MeatRarely">Meat very rarely</option>
+                        <option value="NoMeat">No meat</option>
+                        <option value="Vegetarian">Vegetarian</option>
+                        <option value="Vegan">Vegan</option>
+                    </select>
+
                 <label>Do you recycle regularly?</label>
                 <select asp-for="RecyclesRegularly" id="RecyclesRegularly" required>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                </select>
-
-                <label>Do you purchase sustainable products?</label>
-                <select asp-for="PurchasesSustainableProducts" id="PurchasesSustainableProducts" required>
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                 </select>
@@ -111,25 +129,33 @@
         const typeOfHousing = document.getElementById("TypeOfHousing").value;
         const houseSize = document.getElementById("HouseSize").value;
         const heatingMethod = document.getElementById("HeatingMethod").value;
-        const usesPublicTransport = document.getElementById("UsesPublicTransport").value;
+        const lightsStandby = document.getElementById("LightsStandby").value;
         const ownsCar = document.getElementById("OwnsCar").value;
-        const drivingFrequency = document.getElementById("DrivingFrequency").value;
+        const vehicleType = document.getElementById("VehicleType").value;
+        const commuteHoursPerWeek = document.getElementById("CommuteHoursPerWeek").value;
         const clothingPurchaseFrequency = document.getElementById("ClothingPurchaseFrequency").value;
         const recyclesRegularly = document.getElementById("RecyclesRegularly").value;
-        const purchasesSustainableProducts = document.getElementById("PurchasesSustainableProducts").value;
+        const dietType = document.getElementById("DietType").value;
 
-        // Validation check
+        // Validation check for required fields
         if (
             !numberOfPeople || !typeOfHousing || !houseSize || !heatingMethod ||
-            !usesPublicTransport || !ownsCar || !drivingFrequency || 
-            !clothingPurchaseFrequency || !recyclesRegularly || !purchasesSustainableProducts
+            !lightsStandby || !clothingPurchaseFrequency || !recyclesRegularly || !dietType
         ) {
             isValid = false;
+            console.log("Validation failed for household and lifestyle fields.");
+        }
+
+        // Additional validation for car-related fields if the user owns a car
+        if (ownsCar === "Yes") {
+            if (!vehicleType || !commuteHoursPerWeek) {
+                isValid = false;
+            }
         }
 
         if (!isValid) {
             errorMessage.style.display = "block";
-            event.preventDefault();
+            event.preventDefault(); // Prevent form submission if validation fails
         } else {
             errorMessage.style.display = "none";
 
@@ -143,9 +169,10 @@
                 nextTab = document.getElementById('lifestyleTab');
             }
 
-            // Switch to the next tab
-            switchTab(nextTab);
-            event.preventDefault();
+            if (nextTab) {
+                switchTab(nextTab);
+                event.preventDefault(); // Prevent form submission to allow tab switching
+            }
         }
     };
 
@@ -189,4 +216,23 @@
     document.getElementById("lifestyleTab").onclick = function () {
         switchTab(this);
     };
+
+    function toggleCarDetails() {
+        const ownsCar = document.getElementById("OwnsCar").value;
+        const carDetails = document.getElementById("carDetails");
+        const vehicleType = document.getElementById("VehicleType");
+            const commuteHoursPerWeek = document.getElementById("CommuteHoursPerWeek");
+
+            if (ownsCar === "Yes") {
+                carDetails.style.display = "block";
+                vehicleType.setAttribute("required", "true");
+                commuteHoursPerWeek.setAttribute("required", "true");
+            } else {
+                carDetails.style.display = "none";
+                vehicleType.removeAttribute("required");
+                commuteHoursPerWeek.removeAttribute("required");
+                vehicleType.value = ""; // Clear the value
+                commuteHoursPerWeek.value = ""; // Clear the value
+            }
+    }
 </script>

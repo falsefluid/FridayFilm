@@ -13,14 +13,20 @@ public class CalculateCarbonModel : PageModel {
     public required string HouseSize {get;set;}
     [BindProperty]
     public required string HeatingMethod {get;set;}
+    [BindProperty]
+    public required string LightsStandby {get;set;}
 
     // Transport Section
     [BindProperty]
-    public required string UsesPublicTransport {get;set;}
+    public required string OwnsCar { get; set; }
     [BindProperty]
-    public required string OwnsCar {get;set;}
+    public string? VehicleType { get; set; } // Nullable since it depends on OwnsCar
     [BindProperty]
-    public required string DrivingFrequency {get;set;}
+    public int? CommuteHoursPerWeek { get; set; } // Nullable since it depends on OwnsCar
+    [BindProperty]
+    public int TrainHoursPerWeek { get; set; } 
+    [BindProperty]
+    public int BusHoursPerWeek { get; set; }
     
     // Lifestyle Section
     [BindProperty]
@@ -28,7 +34,7 @@ public class CalculateCarbonModel : PageModel {
     [BindProperty]
     public required string RecyclesRegularly {get;set;}
     [BindProperty]
-    public required string PurchasesSustainableProducts{get;set;}
+    public required string DietType { get; set; }
 
     public double CarbonFootprint {get;set;}
 
@@ -70,6 +76,12 @@ public class CalculateCarbonModel : PageModel {
         else if (HeatingMethod == "Heat Pump")
             footprint += 300;
 
+        // Lights on standby
+        if (LightsStandby == "Yes")
+            footprint -= 50;
+        else if (LightsStandby == "No")
+            footprint += 100;
+
         return footprint;
     }
 
@@ -77,22 +89,29 @@ public class CalculateCarbonModel : PageModel {
     {
         double footprint = 0;
 
-        // Public Transport
-        if (UsesPublicTransport == "Yes")
-            footprint += 100;
-        
-        // Car Ownership
-        if (OwnsCar == "Yes")
+        if (OwnsCar == "Yes" && VehicleType != null && CommuteHoursPerWeek.HasValue)
         {
-            if (DrivingFrequency == "Daily")
-                footprint += 1500;
-            else if (DrivingFrequency == "Weekly")
-                footprint += 300;
-            else if (DrivingFrequency == "Monthly")
-                footprint += 300;
-            else if (DrivingFrequency == "Rarely")
-                footprint += 100;
+            // Carbon footprint estimates per hour of commuting (in kg CO2)
+            double emissionRate = VehicleType switch
+            {
+                "Electric" => 0.05, // Electric: 0.05 kg CO2/hour
+                "PlugInHybrid" => 0.1, // Plug-in Hybrid: 0.1 kg CO2/hour
+                "Hybrid" => 0.15, // Hybrid: 0.15 kg CO2/hour
+                "SmallPetrolDiesel" => 0.2, // Small Petrol/Diesel: 0.2 kg CO2/hour
+                "MediumPetrolDiesel" => 0.3, // Medium Petrol/Diesel: 0.3 kg CO2/hour
+                "LargePetrolDiesel" => 0.4, // Large Petrol/Diesel: 0.4 kg CO2/hour
+                _ => 0
+            };
+
+            // Calculate footprint based on commute hours
+            footprint += emissionRate * CommuteHoursPerWeek.Value * 52; // 52 weeks in a year
         }
+
+        // Train travel
+        footprint += TrainHoursPerWeek * 0.04 * 52; // Train: 0.04 kg CO2/hour
+
+        // Bus travel
+        footprint += BusHoursPerWeek * 0.06 * 52; // Bus: 0.06 kg CO2/hour
 
         return footprint;
     }
@@ -101,22 +120,33 @@ public class CalculateCarbonModel : PageModel {
     {
         double footprint = 0;
 
+        // Clothing purchase frequency
         if (ClothingPurchaseFrequency == "Frequently")
             footprint += 200;
         else if (ClothingPurchaseFrequency == "Occasionally")
             footprint += 100;
         else
             footprint += 50;
+
+        // Diet type
+        if (DietType == "MeatEveryMeal")
+            footprint += 1500;
+        else if (DietType == "MeatSomeMeals")
+            footprint += 1000;
+        else if (DietType == "MeatRarely")
+            footprint += 500;
+        else if (DietType == "NoMeat")
+            footprint += 300;
+        else if (DietType == "Vegetarian")
+            footprint += 200;
+        else if (DietType == "Vegan")
+            footprint += 100;
         
+        // Recycling 
         if (RecyclesRegularly == "Yes")
             footprint -= 100;
         else
             footprint += 200;
-        
-        if (PurchasesSustainableProducts == "Yes")
-            footprint -= 50;
-        else
-            footprint += 100;
         
         return footprint;
     }
@@ -128,20 +158,21 @@ public class CalculateCarbonModel : PageModel {
     public IActionResult OnPost()
     {
         // Calculate the carbon footprint
-        double footprint = 0;
+        double household = GetHouseholdFootprint();
+        double transport = GetTransportFootprint();
+        double lifestyle = GetLifestyleFootprint();
 
-        // Household Calculations
-        footprint += GetHouseholdFootprint();
-
-        // Transport Calculations
-        footprint += GetTransportFootprint();
-
-        // Lifestyle Calculations
-        footprint += GetLifestyleFootprint();
+        double totalFootprint = household + transport + lifestyle;
 
         // Round the result to 2 decimal places
-        footprint = Math.Round(footprint, 2);
+        totalFootprint = Math.Round(totalFootprint, 2);
 
-        return RedirectToPage("/calculate/carbon-results", new { carbonFootprint = footprint });
+        return RedirectToPage("/calculate/carbon-results", new 
+        { 
+            carbonFootprint = totalFootprint, 
+            household = household, 
+            transport = transport, 
+            lifestyle = lifestyle 
+        });
     }
 }

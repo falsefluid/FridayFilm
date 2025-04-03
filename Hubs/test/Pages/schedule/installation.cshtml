@@ -15,7 +15,7 @@
     </div>
 
     <form method="post" class="schedule-form">
-        <input type="text" asp-for="HouseAddress" placeholder="House Address" class="schedule-input" oninput="calculatePrice()" required/>
+        <input type="text" asp-for="HouseAddress" placeholder="House Address" class="schedule-input" oninput="calculatePrice()" required />
         <select asp-for="HouseType" class="schedule-input" id="houseType" onchange="calculatePrice()" required>
             <option value="">Select House Type</option>
             <option value="Apartment">Apartment</option>
@@ -23,11 +23,20 @@
             <option value="Semi-detached">Semi-detached</option>
             <option value="Terrace">Terrace</option>
         </select>
-        <input type="number" asp-for="Bedrooms" id="Bedrooms" placeholder="Number of bedrooms" class="schedule-input" oninput="calculatePrice()" required/>
-        <input type="date" asp-for="InstallationDate" class="schedule-input" required/>
+        <input type="number" asp-for="Bedrooms" id="Bedrooms" placeholder="Number of bedrooms" class="schedule-input" oninput="calculatePrice()" required />
+        <input type="date" asp-for="InstallationDate" class="schedule-input" required />
         <label class="schedule-checkbox">
-            <input type="checkbox" asp-for="IncludeBatteries" id="includeBatteries" onchange="calculatePrice()"> Include batteries?
+            <input type="checkbox" asp-for="IncludeBatteries" id="includeBatteries" onchange="toggleBatteryType(); calculatePrice()"> Include batteries?
         </label>
+        <div id="batteryTypeContainer" style="display: none; margin-top: 10px;">
+            <label for="batteryType">Select Battery Type:</label>
+            <select asp-for="BatteryType" id="batteryType" class="schedule-input" onchange="calculatePrice()">
+                <option value="">Select Battery Type</option>
+                <option value="Small">Small</option>
+                <option value="Medium">Medium</option>
+                <option value="Large">Large</option>
+            </select>
+        </div>
         <button type="submit" class="schedule-button">Schedule</button>
         @if (ModelState.ContainsKey(string.Empty) && ModelState[string.Empty]?.Errors?.Count > 0)
         {
@@ -55,6 +64,18 @@
 </div>
 
 <script>
+    function toggleBatteryType() {
+        const includeBatteries = document.getElementById("includeBatteries").checked;
+        const batteryTypeContainer = document.getElementById("batteryTypeContainer");
+
+        if (includeBatteries) {
+            batteryTypeContainer.style.display = "block";
+        } else {
+            batteryTypeContainer.style.display = "none";
+            document.getElementById("batteryType").value = ""; // Reset battery type selection
+        }
+    }
+
     function calculatePrice() {
         // Get the selected house type and assign a price based on the type
         const houseTypeElement = document.getElementById("houseType");
@@ -84,7 +105,25 @@
 
         // Check if batteries are included
         const includeBatteries = document.getElementById("includeBatteries").checked;
-        const batteryCost = includeBatteries ? 3000 : 0;
+        const batteryTypeElement = document.getElementById("batteryType");
+        const batteryType = batteryTypeElement.value;
+        let batteryCost = 0;
+
+        if (includeBatteries) {
+            switch (batteryType) {
+                case "Small":
+                    batteryCost = 3000;
+                    break;
+                case "Medium":
+                    batteryCost = 5000;
+                    break;
+                case "Large":
+                    batteryCost = 7500;
+                    break;
+                default:
+                    batteryCost = 0; // No battery type selected
+            }
+        }
 
         // Calculate the total cost
         const bedroomCost = bedrooms * 500; // Example cost per bedroom

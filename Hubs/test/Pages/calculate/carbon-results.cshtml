@@ -9,7 +9,49 @@
         <div class="carbon-calc-card">
             <h1>Your Carbon Footprint</h1>
             <p>Your total carbon footprint is: <strong>@Model.CarbonFootprint</strong> kg CO2 per year</p>
-            <a href="/" class="start-over-btn">Start Over</a>
+
+            <h3>Breakdown by Category</h3>
+            <ul>
+                <li><strong>Household:</strong> @Model.HouseholdPercentage% of total</li>
+                <li><strong>Transport:</strong> @Model.TransportPercentage% of total</li>
+                <li><strong>Lifestyle:</strong> @Model.LifestylePercentage% of total</li>
+            </ul>
+
+            <!-- Adjusted canvas size -->
+            <canvas id="carbonPieChart" width="400" height="400"></canvas>
+
+            <a href="/calculate/carbon-footprint" class="start-over-btn">Start Over</a>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('carbonPieChart').getContext('2d');
+    const carbonPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Household', 'Transport', 'Lifestyle'],
+            datasets: [{
+                data: [@Model.HouseholdPercentage, @Model.TransportPercentage, @Model.LifestylePercentage],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>

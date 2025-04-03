@@ -110,6 +110,8 @@ namespace RolsaTechnologies
         public required int NumOfBedrooms {get;set;}
         [Required]
         public required bool IncludeBattery {get;set;}
+        [Required]
+        public required decimal Price {get;set;}
     }
 
     public class ConsultationMessage

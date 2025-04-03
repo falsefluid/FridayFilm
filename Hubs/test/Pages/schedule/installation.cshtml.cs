@@ -25,6 +25,8 @@ public class InstallationModel : PageModel
     public DateTime? InstallationDate {get;set;}
     [BindProperty]
     public bool IncludeBatteries {get;set;}
+    [BindProperty]
+    public string? BatteryType { get; set; } // New property for battery type
 
     public IActionResult OnGet()
     {
@@ -77,6 +79,28 @@ public class InstallationModel : PageModel
             return Page();
         }
 
+        // Calculate the price
+        decimal houseTypePrice = HouseType switch
+        {
+            "Apartment" => 4000m,
+            "Detached" => 8000m,
+            "Semi-detached" => 6500m,
+            "Terrace" => 5500m,
+            _ => 0m
+        };
+
+        decimal bedroomCost = Bedrooms.Value * 500m;
+
+        decimal batteryCost = BatteryType switch
+        {
+            "Small" => 3000m,
+            "Medium" => 5000m,
+            "Large" => 7500m,
+            _ => 0m
+        };
+        
+        decimal totalPrice = houseTypePrice + bedroomCost + batteryCost;
+
         var scheduleBooking = new ScheduleBooking
         {
             ScheduleTypeID = 1, // Installation
@@ -88,12 +112,13 @@ public class InstallationModel : PageModel
             CreateDate = DateTime.UtcNow
         };
 
-        var solarPanelInstallation = new SolarPanelInstallation 
+        var solarPanelInstallation = new SolarPanelInstallation
         {
             HouseType = HouseType,
             NumOfBedrooms = Bedrooms.Value,
             IncludeBattery = IncludeBatteries,
-            ScheduleBooking = scheduleBooking
+            Price = totalPrice, // Assign the calculated price
+            ScheduleBooking = scheduleBooking,
         };
 
         _context.ScheduleBooking.Add(scheduleBooking);
@@ -112,6 +137,5 @@ public class InstallationModel : PageModel
 
         TempData["SuccessMessage"] = "Your installation has been successfully scheduled!";
         return RedirectToPage("/Index");
-
     }
 }

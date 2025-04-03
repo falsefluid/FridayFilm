@@ -6,6 +6,7 @@
     <title>@ViewData["Title"]</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/RolsaTechnologies.styles.css" asp-append-version="true" />
 </head>
@@ -46,8 +47,17 @@
 
                 @if (User.Identity != null && User.Identity.IsAuthenticated)
                 {
-                    <span style="color:black; margin-right:10px;">@User.Identity.Name</span>
-                    <a href="/registration/log-out" class="btn btn-primary" style="color:white;">Logout</a>
+                    @User.Identity.Name
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://cdn-icons-png.flaticon.com/512/70/70314.png" alt="User Icon" style="width: 25px; height: 25px; border-radius: 50%; margin-right: 5px;">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="/settings">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/registration/log-out">Logout</a></li>
+                        </ul>
+                    </div>
                 }
                 else
                 {
