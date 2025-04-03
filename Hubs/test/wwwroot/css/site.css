@@ -31,6 +31,10 @@ body {
   flex: 1;
 }
 
+#userDropdown::after {
+  display: none;
+}
+
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
   color: var(--bs-secondary-color);
   text-align: end;
@@ -141,46 +145,57 @@ body {
 /* about-us.cshtml */
 
 .about-us-container {
-  display:flex;
-  align-items:center;
-  justify-content: space-between;
-  background-image: linear-gradient(to right, #C0DA74, #BEEDAA);
-  padding: 50px;
-  border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-image: linear-gradient(to right, #C0DA74, #BEEDAA);
+    padding: 50px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .about-left {
-  width: 50%;
-  padding: 20px;
+    width: 50%;
+    padding: 20px;
 }
 
 .about-left h2 {
-  font-size: 88px;
-  color: #1e5631;
-  margin-bottom: 15px;
-  text-align:right;
+    font-size: 68px;
+    color: #1e5631;
+    margin-bottom: 15px;
+}
+
+.about-left p {
+    font-size: 18px;
+    color: #555;
 }
 
 .about-right {
-  width: 50%;
-  text-align: right;
+    width: 50%;
+    text-align: right;
 }
 
 .about-right img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 10px;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .about-info {
-  padding-top: 20px;
-  padding-left: 100px;
-  padding-right: 100px;
+    padding: 20px 50px;
+    background-image: linear-gradient(to right, #C0DA74, #BEEDAA);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
 }
 
 .about-info p {
-  font-size: 20px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #333;
 }
 
 .faq-container {
@@ -250,6 +265,10 @@ body {
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.collapse {
+  transition: height 0.05s ease-out !important; /* Reduce duration to 0.2s */
+}
+
 /* login.cshtml + sign-up.cshtml */
 
 .login {
@@ -274,6 +293,23 @@ body {
 .login-container .form-control {
   border-radius: 20px;
   margin-bottom: 20px;
+}
+
+.password-group {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #888;
+}
+
+.toggle-password:hover {
+  color: #333;
 }
 
 /* reduce-carbon-footprint.cshtml */
@@ -534,13 +570,54 @@ body {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 500px;
+  width: 700px;
+  margin: 20px auto;
 }
 
 .carbon-calc-card {
-  background: #eee;
+  text-align: center;
   padding: 20px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.carbon-calc-card h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #1e5631;
+}
+
+.carbon-calc-card h3 {
+  font-size: 24px;
+  margin-top: 20px;
+  color: #333;
+}
+
+.carbon-calc-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.carbon-calc-card ul li {
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+.start-over-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  text-decoration: none;
   border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.start-over-btn:hover {
+  background-color: #218838;
 }
 
 .carbon-calc-card label {
@@ -555,6 +632,75 @@ body {
   margin-top: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+canvas {
+  margin-top: 20px;
+  max-width: 80%; /* Shrink the graph to 80% of the container width */
+  height: auto; /* Maintain aspect ratio */
+  display: block;
+  margin-left: auto;
+  margin-right: auto; /* Center the graph */
+}
+
+/* schedule.cshtml */
+.schedule-options-container {
+  max-width: 800px;
+  margin: 50px auto;
+  text-align: center;
+  background: #f9f9f9;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-title {
+  font-size: 28px;
+  color: #1e5631;
+  margin-bottom: 15px;
+}
+
+.schedule-description {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.schedule-options {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.schedule-option-btn {
+  display: block;
+  text-decoration: none;
+  background: #94AE89;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 45%;
+  transition: transform 0.3s, background-color 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-option-btn:hover {
+  background-color: #849b7b;
+  transform: translateY(-5px);
+}
+
+.schedule-option-content {
+  text-align: center;
+}
+
+.schedule-option-content h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.schedule-option-content p {
+  font-size: 14px;
+  color: #f0f0f0;
 }
 
 /* installation.cshtml */
@@ -637,7 +783,6 @@ textarea.schedule-input {
   grid-template-columns: 220px 1fr;
   gap: 20px;
   width: 100%;
-  height: 100vh;
   background: #f9f9f9;
   padding: 20px;
   box-sizing: border-box;
@@ -707,6 +852,12 @@ textarea.schedule-input {
   margin-top: 20px;
 }
 
+.cancel-button {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+}
+
 .settings-card button {
   padding: 10px 15px;
   background: #28a745;
@@ -771,26 +922,66 @@ textarea.schedule-input {
 }
 
 .scroll-container {
+  background-color: #666;
   margin-bottom: 20px;
-}
-
-.scroll-container img {
-  
+  max-width: 900px;
+  color: white;
+  border-radius: 10px;
+  padding: 10px; /* Add padding for better spacing */
+  overflow-x: auto; /* Enable horizontal scrolling */
 }
 
 .horizontal-scroll {
   display: flex;
-  overflow-x: auto;
   gap: 10px;
   padding: 10px 0;
   white-space: nowrap;
+  overflow-x: auto; /* Ensure horizontal scrolling works */
 }
 
 .scroll-item {
   background: #fff;
+  color: black;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  min-width: 200px;
+  max-width: 250px; /* Limit the width of each item */
+  flex: 0 0 auto; /* Prevent items from shrinking or growing */
   text-align: center;
+}
+
+.no-results {
+  background: #fff;
+  color:black;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.reschedule-btn, .cancel-btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.reschedule-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.reschedule-btn:hover {
+  background-color: #0056b3;
+}
+
+.cancel-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background-color: #a71d2a;
 }
