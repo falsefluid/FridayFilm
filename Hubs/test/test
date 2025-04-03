@@ -1,7 +1,11 @@
 Site.css
+layout.cshtml <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+installation.cshtml
+database model
+sign-up.cshtml
+login.cshtml
+settings.cshtml
+settings.cshtml.cs
 schedule.cshtml
-schedule.cshtml.cs
-schedule/consultation.cshtml
-schedule/consultation.cshtml.cs
-schedule/installation.cshtml
-schedule/installation.cshtml.cs
+about-us.cshtml
+carbon-results + carbon-footprint calculator .cshtml + .cs
