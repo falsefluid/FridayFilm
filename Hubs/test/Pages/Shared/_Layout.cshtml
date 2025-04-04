@@ -29,7 +29,7 @@
                             </a>
                             <ul class ="dropdown-menu" aria-labelledby="calculateDropdown">
                                 <li><a class="dropdown-item" href="/calculate/carbon-footprint">Carbon Footprint</a></li>
-                                <li><a class="dropdown-item" href="#">Energy Usage</a></li>
+                                <li><a class="dropdown-item" href="/calculate/energy-usage">Energy Usage</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -37,7 +37,7 @@
                                 Information
                             </a>
                             <ul class ="dropdown-menu" aria-labelledby="informationDropdown">
-                                <li><a class="dropdown-item" href="/information/green-technology">Emerging Green Technology</a></li>
+                                <li><a class="dropdown-item" href="/information/green-technology">Articles</a></li>
                                 <li><a class="dropdown-item" href="/information/reduce-carbon-footprint">Reducing Carbon Footprint</a></li>
                             </ul>
                         </li>
@@ -79,8 +79,10 @@
                 <h5>Want to stay up to date?</h5>
                 <p>Need information about all the new green energy products or discounts that you might be able to get?</p>
                 <div class="newsletter">
-                    <input type="email" placeholder="Email Address">
-                    <button type="submit">Sign Up</button>
+                    <form method="post" action="/Newsletter/Subscribe">
+                        <input type="email" name="Email" placeholder="Email Address" class="newsletter-input" required />
+                        <button type="submit" class="newsletter-button">Sign Up</button>
+                    </form>
                 </div>
                 <p style="padding-top: 35px;">&copy; Rolsa Technologies 2024-2025</p>
             </div>
@@ -89,16 +91,15 @@
                 <div class="footer-links">
                     <div>
                         <h5>Information</h5>
-                        <a href="/">Home</a>
                         <a href="/about-us">About Us</a>
-                        <a href="/information/green-technology">Green Technology</a>
+                        <a href="/information/green-technology">Articles</a>
                         <a href="/information/reduce-carbon-footprint">Reducing Carbon Footprint</a>
                     </div>
 
                     <div>
                         <h5>Calculate</h5>
                         <a href="/calculate/carbon-footprint">Carbon Footprint</a>
-                        <a href="#">Energy Usage</a>
+                        <a href="/calculate/energy-usage">Energy Usage</a>
                     </div>
 
                     <div>
@@ -108,13 +109,37 @@
                     </div>
                 </div>
                 <div class="contact-info">
-                    <p>📞 01234 56789</p>
-                    <p>📧 rolsatechnologies@email.co.uk</p>
+                    <div class="contact-item">
+                        <span class="contact-icon">📞</span>
+                        <span class="contact-text">01234 56789</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📧</span>
+                        <span class="contact-text">rolsatechnologies@email.co.uk</span>
+                    </div>
                 </div>
             </div>
         </div>
     </footer>
 
+    <script>
+    // Check if there's a message in TempData
+    @if (TempData["NewsletterMessage"] != null)
+    {
+        <text>
+            const message = "@TempData["NewsletterMessage"]";
+            const notification = document.createElement("div");
+            notification.className = "notification";
+            notification.innerText = message;
+            document.body.appendChild(notification);
+
+            // Automatically hide the notification after 5 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        </text>
+    }
+</script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

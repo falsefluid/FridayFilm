@@ -40,12 +40,19 @@ public class LoginModel : PageModel
     {
         if (ValidateUser(Username, Password))
         {
-            var customer = _context.Customer.SingleOrDefault(c => c.Username == Username);
+            var customer = _context.Customer.SingleOrDefault(c => c.Username == Username || c.Email == Username);
+
+            // If the user logged in with their email, extract the username part
+            var usernameForClaim = Username;
+            if (IsEmail(Username))
+            {
+                usernameForClaim = customer.Username;  // Use the username from the database
+            }
 
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, customer.CID.ToString()),
-                new Claim(ClaimTypes.Name, Username ?? string.Empty)
+                new Claim(ClaimTypes.Name, usernameForClaim)  // Use the extracted username
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -59,7 +66,20 @@ public class LoginModel : PageModel
         // If we got this far, something failed; redisplay form
         ModelState.AddModelError(string.Empty, "Invalid login attempt.");
         return Page();
+    }
 
+    // Helper function to check if the input is an email address
+    private bool IsEmail(string input)
+    {
+        try
+        {
+            var addr = new System.Net.Mail.MailAddress(input);
+            return addr.Address == input;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     private bool ValidateUser (string? Username, string? Password)

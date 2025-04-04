@@ -2,14 +2,34 @@
 @model ArticleModel
 @using System.Web
 @{
-    ViewData["Title"] = Model.Article.Title;
+    ViewData["Title"] = Model.Article?.Title ?? "Article Not Found";
 }
-<div class="article-page">
-    <h1>@Model.Article.Title</h1>
-    <p><strong>By:</strong> @Model.Article.Author | <strong>Published:</strong> @Model.Article.CreateDate.ToString("MMMM dd, yyyy")</p>
-    <img src="@Model.Article.ImageURL" alt="Article Image" />
 
-    <div>
-        @Html.Raw(Model.Article.Content)
-    </div>
+<div class="article-page">
+    @if (Model.Article != null)
+    {
+        <header class="article-page-header">
+            <h1 class="article-page-title">@Model.Article.Title</h1>
+            <p class="article-page-meta">
+                <strong>By:</strong> @Model.Article.Author | 
+                <strong>Published:</strong> @Model.Article.CreateDate.ToString("MMMM dd, yyyy")
+            </p>
+        </header>
+
+        <div class="article-page-image-container">
+            <img src="@Model.Article.ImageURL" alt="Article Image" class="article-page-image" />
+        </div>
+
+        <section class="article-page-content">
+            @Html.Raw(Model.Article.Content)
+        </section>
+    }
+    else
+    {
+        <div class="article-page-not-found">
+            <h2>Article Not Found</h2>
+            <p>We're sorry, but the article you're looking for does not exist or has been removed.</p>
+            <a href="/information/green-technology" class="back-to-articles-btn">Back to Articles</a>
+        </div>
+    }
 </div>

@@ -56,11 +56,11 @@
         </div>
 
         <!-- Schedules Tab -->
-        <div id="schedules" class="tab-content settings-card" style="display: none; background-color: #666;">
+        <div id="schedules" class="tab-content settings-card" style="display: none;">
             
             <!-- Upcoming Installations -->
             <div class="scroll-container">
-                <h3 style="margin-left: 20px;">Upcoming Installations</h3>
+                <h3>Upcoming Installations</h3>
                 <div class="horizontal-scroll">
                     @if (Model.UpcomingInstallations.Any())
                     {
@@ -92,11 +92,11 @@
                 </div>
             </div>
 
-            <hr style="color: white;">
+            <hr style="color: black;">
 
             <!-- Upcoming Consultations -->
             <div class="scroll-container">
-                <h3 style="margin-left: 20px;">Upcoming Consultations</h3>
+                <h3>Upcoming Consultations</h3>
                 <div class="horizontal-scroll">
                     @if (Model.UpcomingConsultations.Any())
                     {

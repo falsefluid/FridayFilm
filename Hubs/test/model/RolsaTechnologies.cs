@@ -64,38 +64,6 @@ namespace RolsaTechnologies
         public ICollection<SolarPanelInstallation> SolarPanelInstallation {get;set;} = new List<SolarPanelInstallation>();
         public ICollection<ConsultationMessage> ConsultationMessage {get;set;} = new List<ConsultationMessage>();
     }
-
-    public class GreenEnergyProduct 
-    {
-        [Key]
-        [Column(Order=1)]
-        public int PID {get;set;}
-        [Required]
-        [MaxLength(100)]
-        public required string ProductName {get;set;}
-        [Required]
-        [MaxLength(2000)]
-        public required string Description {get;set;}
-        [Required]
-        public required string Picture {get;set;}
-
-        public ICollection<LinksForProduct> LinksForProduct {get;set;} = new List<LinksForProduct>();
-    }
-
-    public class LinksForProduct 
-    {
-        [Key]
-        [Column(Order=1)]
-        public int LID {get;set;}
-        public int PID {get;set;}
-        public virtual GreenEnergyProduct? GreenEnergyProduct {get;set;}
-        public decimal Price {get;set;}
-        public int Stock {get;set;}
-        [Required]
-        public required string Link {get;set;}
-        [Required]
-        public required string LogoURL {get;set;}
-    }
     
     public class SolarPanelInstallation 
     {
@@ -111,6 +79,7 @@ namespace RolsaTechnologies
         [Required]
         public required bool IncludeBattery {get;set;}
         [Required]
+        [Precision(18, 2)]
         public required decimal Price {get;set;}
     }
 
@@ -153,6 +122,16 @@ namespace RolsaTechnologies
         public string? Author { get; set; }
     }
 
+    public class EmailNews
+    {
+        [Key]
+        [Column(Order=1)]
+        public int ENID {get;set;}
+        [Required]
+        public required string Email {get;set;}
+        public DateTime CreateDate {get;set;} = DateTime.UtcNow;
+    }
+
     public class RolsaTechnologiesContext : DbContext
     {
         public RolsaTechnologiesContext(DbContextOptions<RolsaTechnologiesContext> options) : base(options)
@@ -162,11 +141,10 @@ namespace RolsaTechnologies
         public required DbSet<Customer> Customer {get;set;}
         public required DbSet<ScheduleType> ScheduleTypes {get;set;}
         public required DbSet<ScheduleBooking> ScheduleBooking {get;set;}
-        public required DbSet<GreenEnergyProduct> GreenEnergyProducts {get;set;}
-        public required DbSet<LinksForProduct> LinksForProducts {get;set;}
         public required DbSet<SolarPanelInstallation> SolarPanelInstallations {get;set;}
         public required DbSet<ConsultationMessage> ConsultationMessages {get;set;}
         public required DbSet<Article> Articles { get; set; }
+        public required DbSet<EmailNews> EmailNews { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -181,6 +159,14 @@ namespace RolsaTechnologies
             modelBuilder.Entity<Customer>()
             .HasIndex(c => c.PhoneNumber)
             .IsUnique(); // Makes sure that phone number is unique
+
+            modelBuilder.Entity<Customer>()
+            .HasIndex(c => c.Email)
+            .IsUnique(); // Makes sure that email is unique
+
+            modelBuilder.Entity<EmailNews>()
+            .HasIndex(e => e.Email)
+            .IsUnique(); // Makes sure that email is unique
 
 
             // Relationships
@@ -225,38 +211,10 @@ namespace RolsaTechnologies
             .WithMany(sb => sb.SolarPanelInstallation)
             .HasForeignKey (sp => sp.HousePostcodeID);
 
-            modelBuilder.Entity<LinksForProduct>()
-            .HasOne(lp => lp.GreenEnergyProduct)
-            .WithMany(ge => ge.LinksForProduct)
-            .HasForeignKey (lp => lp.PID);
-
             // Setting the two schedule types
             modelBuilder.Entity<ScheduleType>().HasData(
                 new ScheduleType { SID = 1, Schedule = "Installation" },
                 new ScheduleType { SID = 2, Schedule = "Consultation" }
-            );
-
-            // GreenEnergyProduct
-            modelBuilder.Entity<GreenEnergyProduct>().HasData(
-                new GreenEnergyProduct
-                {
-                    PID = 1,
-                    ProductName = "Grant Aerona3 R32 Air Source Heat Pump",
-                    Description = "Compact in size and highly efficient, the Aerona³ heat pumps provide homeowners with a renewable solution to fulfil their heating and hot water requirements. Using the environmentally friendly R32 refrigerant, an Aerona³ heat pump achieves high performances to effectively keep properties warm while also helping households to lower their dependency on fossil fuels.",
-                    Picture = "https://www.theunderfloorheatingstore.com/cdn/shop/files/large-hpid10-10kw-aerona3-heat-pump_8091452703001-336937_700x700.jpg?v=1721297430"
-                }
-            );
-
-            // LinksForProduct
-            modelBuilder.Entity<LinksForProduct>().HasData(
-                new LinksForProduct
-                {
-                    LID = 1,
-                    PID = 1,
-                    Price = 2838.00m,
-                    Link = "https://www.theunderfloorheatingstore.com/products/aerona-inverter-driven-air-source-heat-pump",
-                    LogoURL = "https://www.theunderfloorheatingstore.com/cdn/shop/files/the-underfloor-heating-store-hg-logos_1311x250.png?v=1732785944"
-                }
             );
 
             // Articles

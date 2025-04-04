@@ -1,19 +1,35 @@
-@page
+@page "{pageNumber:int?}"
 @model GreenTechnologyModel
 @{
     ViewData["Title"] = "Green Technology";
 }
 
 <h2 class="text-center">Articles</h2>
-<p class = "text-center">Stay up to date with the latest articles</p>
-<div class="article-carousel-container">
-    <button id="left-arrow" class="carousel-btn left" onclick="moveCarousel(-1, 'new-articles')">&#10094;</button> <!-- less than symbol in html -->
-    <div class ="article-carousel new-articles">
+<p class="text-center">Stay up to date with the latest articles</p>
+
+<!-- Search Bar -->
+<div class="search-container">
+    <form method="get" class="search-form">
+        <select name="filterType" class="search-dropdown">
+            <option value="title" selected="@(Model.FilterType == "title")">Title</option>
+            <option value="author" selected="@(Model.FilterType == "author")">Author</option>
+        </select>
+        <input type="text" name="searchQuery" value="@Model.SearchQuery" placeholder="Search..." class="search-input" />
+        <button type="submit" class="search-button">Search</button>
+    </form>
+</div>
+
+<div class="article-container">
+    @if (Model.Articles != null && Model.Articles.Any())
+    {
         @foreach (var article in Model.Articles)
         {
             <div class="article-card">
                 <div class="article-image-container">
-                    <img src="@article.ImageURL" alt="Article Image"/>
+                    <div class="article-date">
+                        @article.CreateDate.ToString("MMM dd, yyyy")
+                    </div>
+                    <img src="@article.ImageURL" alt="Article Image" />
                 </div>
                 <div class="article-info">
                     <h2 class="article-title">@Html.DisplayFor(modelItem => article.Title)</h2>
@@ -23,63 +39,42 @@
                 </div>
             </div>
         }
-    </div>
-    <button id="right-arrow" class="carousel-btn right" onclick="moveCarousel(1, 'new-articles')">&#10095;</button> <!-- greater than symbol in html -->
+    }
+    else
+    {
+        <div class="no-articles">
+            <p>No articles found. Try adjusting your search or check back later!</p>
+            <p>Tip: Leave blank and press 'Search' to clear the search!</p>
+        </div>
+    }
 </div>
 
-@section Scripts {
-    <script>
-        const articlesToShow = 3;  // Number of articles to display at a time
-        let currentIndexNewArticles = 0;  
-
-        function updateCarousel(carouselClass, currentIndex) {
-            const articleCards = document.querySelectorAll(`.${carouselClass} .article-card`);
-            const totalArticles = articleCards.length;
-
-            // Hide all article cards initially
-            articleCards.forEach((card) => {
-                card.style.display = 'none';
-            });
-
-            // Display the articles based on the current index
-            for (let i = 0; i < articlesToShow; i++) {
-                let displayIndex = (currentIndex + i) % totalArticles;
-                if (displayIndex < 0) {
-                    displayIndex += totalArticles;
+<div class="pagination-container text-center">
+    @if (Model.TotalPages > 1)
+    {
+        <nav>
+            <ul class="pagination">
+                @if (Model.CurrentPage > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-page="/information/green-technology" asp-route-pageNumber="@(Model.CurrentPage - 1)">Previous</a>
+                    </li>
                 }
-                articleCards[displayIndex].style.display = 'block';
-            }
 
-            // Update arrow button states for the articles section
-            if (carouselClass === 'new-articles') {
-                document.getElementById('left-arrow').classList.toggle('disabled', currentIndex === 0);
-                document.getElementById('right-arrow').classList.toggle('disabled', currentIndex + articlesToShow >= totalArticles);
-            }
-        }
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-page="/information/green-technology" asp-route-pageNumber="@i">@i</a>
+                    </li>
+                }
 
-        function moveCarousel(direction, carouselClass) {
-            let currentIndex = carouselClass === 'new-articles' ? currentIndexNewArticles : 0;
-
-            currentIndex += direction;
-            const articleCards = document.querySelectorAll(`.${carouselClass} .article-card`);
-            const totalArticles = articleCards.length;
-
-            if (currentIndex < 0) {
-                currentIndex = 0;
-            } else if (currentIndex + articlesToShow > totalArticles) {
-                currentIndex = totalArticles - articlesToShow;
-            }
-
-            // Update the global index for articles
-            if (carouselClass === 'new-articles') {
-                currentIndexNewArticles = currentIndex;
-            }
-
-            updateCarousel(carouselClass, currentIndex);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            updateCarousel('new-articles', currentIndexNewArticles);
-        });
-    </script>
-}
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-page="/information/green-technology" asp-route-pageNumber="@(Model.CurrentPage + 1)">Next</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>

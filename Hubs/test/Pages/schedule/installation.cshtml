@@ -28,8 +28,7 @@
         <label class="schedule-checkbox">
             <input type="checkbox" asp-for="IncludeBatteries" id="includeBatteries" onchange="toggleBatteryType(); calculatePrice()"> Include batteries?
         </label>
-        <div id="batteryTypeContainer" style="display: none; margin-top: 10px;">
-            <label for="batteryType">Select Battery Type:</label>
+        <div id="batteryTypeContainer" style="display: none;">
             <select asp-for="BatteryType" id="batteryType" class="schedule-input" onchange="calculatePrice()">
                 <option value="">Select Battery Type</option>
                 <option value="Small">Small</option>
@@ -135,4 +134,11 @@
         document.getElementById("breakdownBatteries").value = "£" + batteryCost.toLocaleString();
         document.getElementById("totalPrice").value = "£" + total.toLocaleString();
     }
+    window.addEventListener("DOMContentLoaded", function () {
+        // Re-display battery type selection if previously selected
+        toggleBatteryType();
+        
+        // Recalculate the price using the pre-filled form values
+        calculatePrice();
+    });
 </script>
